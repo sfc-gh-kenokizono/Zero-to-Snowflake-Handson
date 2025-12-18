@@ -121,13 +121,11 @@ Zero-to-Snowflake-Handson/
 │   ├── reset.sql
 │   └── slides/
 │
-├── resources/                   # 追加リソース
-│   ├── architecture.md
-│   ├── faq.md
-│   └── troubleshooting.md
-│
-└── utils/                       # ユーティリティ
-    └── validation.sql
+└── resources/                   # 追加リソース
+    ├── architecture.md
+    ├── faq.md
+    ├── troubleshooting.md
+    └── presenter_script.md
 ```
 
 ---
