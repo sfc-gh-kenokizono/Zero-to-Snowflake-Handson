@@ -140,56 +140,55 @@ Zero-to-Snowflake-Handson/
 
 ### データモデル概要
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         TB_101 Database                          │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐        │
-│  │   raw_pos    │   │ raw_customer │   │ raw_support  │        │
-│  │              │   │              │   │              │        │
-│  │ • country    │   │ • customer_  │   │ • truck_     │        │
-│  │ • franchise  │   │   loyalty    │   │   reviews    │        │
-│  │ • location   │   │              │   │              │        │
-│  │ • menu       │   └──────────────┘   └──────────────┘        │
-│  │ • truck      │                                               │
-│  │ • order_     │          │                  │                 │
-│  │   header     │          │                  │                 │
-│  │ • order_     │          ▼                  ▼                 │
-│  │   detail     │   ┌──────────────────────────────┐           │
-│  └──────────────┘   │        harmonized            │           │
-│         │           │                              │           │
-│         │           │ • orders_v                   │           │
-│         ▼           │ • customer_loyalty_metrics_v │           │
-│  ┌──────────────┐   │ • truck_reviews_v            │           │
-│  │  analytics   │   │ • daily_weather_v            │           │
-│  │              │   └──────────────────────────────┘           │
-│  │ • orders_v   │                                               │
-│  │ • customer_  │                                               │
-│  │   loyalty_   │   ┌──────────────┐   ┌──────────────┐        │
-│  │   metrics_v  │   │  governance  │   │semantic_layer│        │
-│  └──────────────┘   │              │   │              │        │
-│                     │ • pii tag    │   │ • orders_v   │        │
-│                     │ • policies   │   │ • customer_  │        │
-│                     └──────────────┘   │   metrics_v  │        │
-│                                        └──────────────┘        │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    subgraph DB["🗄️ TB_101 Database"]
+        subgraph RAW["Raw Layer"]
+            RAW_POS["raw_pos<br/>country, franchise, location,<br/>menu, truck, order_header,<br/>order_detail"]
+            RAW_CUST["raw_customer<br/>customer_loyalty"]
+            RAW_SUP["raw_support<br/>truck_reviews"]
+        end
+        
+        subgraph HARM["Harmonized Layer"]
+            HARM_V["harmonized<br/>orders_v, customer_loyalty_metrics_v,<br/>truck_reviews_v, daily_weather_v"]
+        end
+        
+        subgraph ANAL["Analytics Layer"]
+            ANAL_V["analytics<br/>orders_v, customer_loyalty_metrics_v"]
+        end
+        
+        subgraph GOV["Governance & Semantic"]
+            GOV_S["governance<br/>pii tag, policies"]
+            SEM_S["semantic_layer<br/>orders_v, customer_metrics_v"]
+        end
+    end
+    
+    RAW_POS --> HARM_V
+    RAW_CUST --> HARM_V
+    RAW_SUP --> HARM_V
+    HARM_V --> ANAL_V
 ```
 
 ### ロール階層
 
-```
-              ACCOUNTADMIN
-                   │
-              SECURITYADMIN ─────── SYSADMIN
-                   │                    │
-              USERADMIN            TB_ADMIN
-                   │                    │
-                   └───────┬────────────┘
-                           │
-                    TB_DATA_ENGINEER
-                      │         │
-               TB_DEV       TB_ANALYST
+```mermaid
+flowchart TB
+    ACCT["ACCOUNTADMIN"]
+    SEC["SECURITYADMIN"]
+    SYS["SYSADMIN"]
+    USER["USERADMIN"]
+    TBA["TB_ADMIN"]
+    TBDE["TB_DATA_ENGINEER"]
+    TBD["TB_DEV"]
+    TBAN["TB_ANALYST"]
+    
+    ACCT --> SEC
+    ACCT --> SYS
+    SEC --> USER
+    SYS --> TBA
+    TBA --> TBDE
+    TBDE --> TBD
+    TBDE --> TBAN
 ```
 
 ---
