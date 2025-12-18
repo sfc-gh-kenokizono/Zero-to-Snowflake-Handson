@@ -1,7 +1,7 @@
 # Zero to Snowflake ハンズオン
 
 <p align="center">
-  <img src="https://www.snowflake.com/wp-content/themes/flavor/flavor/assets/img/logos/logo-white.svg" alt="Snowflake Logo" width="300">
+  <img src="https://www.snowflake.com/wp-content/themes/flavor/flavor/assets/img/logos/logo-sno-blue.svg" alt="Snowflake Logo" width="300">
 </p>
 
 Snowflakeの基本機能から高度なAI/ML機能、ガバナンスまでを体系的に学ぶハンズオン教材です。  
