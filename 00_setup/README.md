@@ -1,136 +1,215 @@
 # Module 00: 環境セットアップ
 
-このモジュールでは、ハンズオンに必要なSnowflake環境を構築します。
+> 🎯 **目標**: ハンズオン用のSnowflake環境を構築する
 
 ---
 
-## 📋 概要
+## 📂 このモジュールで使用するファイル
 
-**所要時間**: 約15分（データロード含む）
-
-### 作成されるオブジェクト
-
-| カテゴリ | オブジェクト |
-|---------|------------|
-| データベース | `TB_101` |
-| スキーマ | `raw_pos`, `raw_customer`, `raw_support`, `harmonized`, `analytics`, `governance`, `semantic_layer` |
-| ウェアハウス | `tb_de_wh`, `tb_dev_wh`, `tb_analyst_wh`, `tb_cortex_wh` |
-| ロール | `tb_admin`, `tb_data_engineer`, `tb_dev`, `tb_analyst` |
+| ファイル | 説明 | 使い方 |
+|---------|------|--------|
+| [`setup.sql`](./setup.sql) | **セットアップスクリプト** | Snowsightで全選択→実行 |
+| [`cleanup.sql`](./cleanup.sql) | クリーンアップ用 | ハンズオン終了後に実行 |
 
 ---
 
-## 🚀 セットアップ手順
+## ⏱️ 所要時間
 
-### Step 1: Snowsightにログイン
+**約15分**（データロード含む）
 
-1. [app.snowflake.com](https://app.snowflake.com) にアクセス
-2. 認証情報を入力してログイン
+---
 
-### Step 2: ワークシートを作成
+## 📋 作成されるオブジェクト
 
-1. 左メニューから「**Worksheets**」をクリック
-2. 右上の「**+**」ボタンをクリック
-3. 「**SQL Worksheet**」を選択
+### データベース
 
-### Step 3: ロールを確認
+```
+TB_101
+├── raw_pos           ← 生のPOSデータ
+├── raw_customer      ← 生の顧客データ
+├── raw_support       ← 生のサポートデータ
+├── harmonized        ← 整形済みデータ
+├── analytics         ← 分析用ビュー
+├── governance        ← ガバナンス用
+└── semantic_layer    ← セマンティックレイヤー
+```
 
-ワークシート右上のコンテキストメニューで以下を確認：
-- **Role**: `ACCOUNTADMIN` または `SYSADMIN`
+### ウェアハウス
 
-### Step 4: セットアップSQLを実行
+| 名前 | サイズ | 用途 |
+|------|-------|------|
+| `tb_de_wh` | Large→XSmall | データエンジニアリング |
+| `tb_dev_wh` | XSmall | 開発用 |
+| `tb_analyst_wh` | Large | 分析用 |
+| `tb_cortex_wh` | Large | Cortex AI用 |
 
-1. `setup.sql` の内容をワークシートにコピー
-2. 全体を選択（Cmd+A / Ctrl+A）
-3. 実行ボタン（▶）をクリック、または Cmd+Enter / Ctrl+Enter
+### ロール階層
 
-### Step 5: 完了確認
-
-以下のクエリで環境が正しくセットアップされたことを確認：
-
-```sql
--- データベース確認
-SHOW DATABASES LIKE 'TB_101';
-
--- テーブル確認（注文ヘッダーに約6,200万行）
-SELECT COUNT(*) FROM tb_101.raw_pos.order_header;
-
--- ロール確認
-SHOW ROLES LIKE 'TB_%';
+```mermaid
+graph TB
+    SYSADMIN --> TB_ADMIN[tb_admin]
+    TB_ADMIN --> TB_DE[tb_data_engineer]
+    TB_ADMIN --> TB_DEV[tb_dev]
+    TB_ADMIN --> TB_ANALYST[tb_analyst]
 ```
 
 ---
 
-## 📁 ファイル構成
+# 🔰 セットアップ手順
 
-| ファイル | 説明 |
-|---------|------|
-| `setup.sql` | 環境構築SQL（データベース、スキーマ、テーブル、データロード） |
-| `cleanup.sql` | 環境の完全削除SQL |
+## Step 1: Snowsightにログイン
 
----
+1. [Snowflake](https://app.snowflake.com/) にアクセス
+2. アカウント情報を入力してログイン
 
-## ⚠️ 注意事項
-
-### データロード時間について
-
-- S3からのデータロードには **5-10分** かかることがあります
-- `order_detail` テーブルのロードが最も時間がかかります
-- ロード中は別の作業を進めないでください
-
-### トライアルアカウントの場合
-
-- トライアルアカウントでも全機能を利用可能です
-- クレジット残量に注意してください（セットアップで約2-3クレジット消費）
-
-### エラーが発生した場合
-
-1. **「Insufficient privileges」エラー**
-   - `ACCOUNTADMIN` ロールに切り替えてください
-
-2. **「Object already exists」エラー**
-   - 以前のセットアップが残っています
-   - `cleanup.sql` を実行してから再度セットアップしてください
-
-3. **データロードが失敗する場合**
-   - ネットワーク接続を確認
-   - ウェアハウスが起動しているか確認
+> 💡 トライアルアカウントでも実行可能です
 
 ---
 
-## 🔄 クリーンアップ
+## Step 2: SQLワークシートを作成
 
-ハンズオン終了後、または環境をリセットしたい場合：
+1. 左メニューの **Worksheets** をクリック
+2. 右上の **+** → **SQL Worksheet** を選択
+
+---
+
+## Step 3: セットアップスクリプトを実行
+
+### 3-1. スクリプトをコピー
+
+[`setup.sql`](./setup.sql) の内容をすべてコピーします。
+
+### 3-2. ワークシートに貼り付け
+
+作成したワークシートに貼り付けます。
+
+### 3-3. 全選択して実行
+
+```
+Mac:     Cmd + A → Cmd + Enter
+Windows: Ctrl + A → Ctrl + Enter
+```
+
+> ⏱️ 約15分かかります（データロードのため）
+
+---
+
+## Step 4: セットアップ完了の確認
+
+以下のクエリで確認できます：
+
+```sql
+-- データベースの確認
+SHOW DATABASES LIKE 'TB_101';
+
+-- スキーマの確認
+SHOW SCHEMAS IN DATABASE TB_101;
+
+-- ウェアハウスの確認
+SHOW WAREHOUSES LIKE 'TB%';
+
+-- ロールの確認
+SHOW ROLES LIKE 'TB%';
+
+-- サンプルデータの確認
+SELECT COUNT(*) FROM tb_101.raw_pos.order_header;
+```
+
+---
+
+## ✅ セットアップ完了チェックリスト
+
+- [ ] `TB_101` データベースが作成された
+- [ ] 7つのスキーマが作成された
+- [ ] 4つのウェアハウスが作成された
+- [ ] 4つのロールが作成された
+- [ ] `raw_pos.order_header` にデータがロードされた
+
+---
+
+## ❌ トラブルシューティング
+
+### 権限エラーが出る場合
+
+```
+Error: Insufficient privileges to operate on...
+```
+
+**解決策**: `ACCOUNTADMIN` ロールで実行してください
+
+```sql
+USE ROLE accountadmin;
+```
+
+### ウェアハウスが起動しない場合
+
+```
+Error: Warehouse is suspended
+```
+
+**解決策**: ウェアハウスを手動で起動
+
+```sql
+ALTER WAREHOUSE tb_de_wh RESUME;
+```
+
+### データロードに失敗する場合
+
+**解決策**: ネットワーク接続を確認し、再実行してください
+
+---
+
+## 🧹 クリーンアップ（ハンズオン終了後）
+
+ハンズオン終了後、環境を削除する場合：
 
 ```sql
 -- cleanup.sql を実行
--- ⚠️ すべてのデータが削除されます
+-- または以下を実行
+
+USE ROLE accountadmin;
+
+DROP DATABASE IF EXISTS tb_101;
+DROP WAREHOUSE IF EXISTS tb_de_wh;
+DROP WAREHOUSE IF EXISTS tb_dev_wh;
+DROP WAREHOUSE IF EXISTS tb_analyst_wh;
+DROP WAREHOUSE IF EXISTS tb_cortex_wh;
+DROP ROLE IF EXISTS tb_admin;
+DROP ROLE IF EXISTS tb_data_engineer;
+DROP ROLE IF EXISTS tb_dev;
+DROP ROLE IF EXISTS tb_analyst;
 ```
 
----
-
-## 📊 データモデル
-
-### Tasty Bytes データセット
-
-架空のフードトラック企業「Tasty Bytes」のデータを使用します：
-
-- **国・都市**: 15カ国、30都市以上
-- **フードトラック**: 450台以上
-- **メニュー**: 15ブランド、100アイテム以上
-- **注文データ**: 約6,200万件（2019-2022年）
-- **顧客**: ロイヤルティプログラム会員データ
-- **レビュー**: 顧客レビューデータ
+> ⚠️ **注意**: クリーンアップを実行すると、すべてのデータが削除されます
 
 ---
 
-## ✅ チェックリスト
+## ➡️ 次のステップ
 
-セットアップ完了後、以下を確認してください：
+| 次のモジュール | 内容 |
+|--------------|------|
+| [01_getting_started](../01_getting_started/) | Snowflakeの基本操作を学ぶ |
 
-- [ ] `TB_101` データベースが存在する
-- [ ] `raw_pos.order_header` に約6,200万行のデータがある
-- [ ] `tb_admin`, `tb_data_engineer`, `tb_dev`, `tb_analyst` ロールが存在する
-- [ ] `tb_de_wh`, `tb_dev_wh`, `tb_analyst_wh`, `tb_cortex_wh` ウェアハウスが存在する
+---
 
-すべてのチェックが完了したら、次のモジュール [01_getting_started](../01_getting_started/) に進んでください。
+## 📊 ロードされるデータについて
 
+### Tasty Bytes とは？
+
+架空のフードトラック企業で、世界中で営業しています。
+
+| データ | 説明 |
+|-------|------|
+| **注文データ** | 売上、メニュー、トラック情報 |
+| **顧客データ** | ロイヤルティプログラム情報 |
+| **レビューデータ** | 顧客からのフィードバック |
+| **位置データ** | トラックの営業場所 |
+
+### データ量（概算）
+
+| テーブル | 行数 |
+|---------|------|
+| `order_header` | 約200万行 |
+| `order_detail` | 約500万行 |
+| `customer_loyalty` | 約10万行 |
+| `truck_reviews` | 約5万行 |
