@@ -131,38 +131,37 @@ Dynamic Tablesによる宣言的ETLを体験できます。
 ```
 Zero-to-Snowflake-Handson/
 ├── README.md                    # このファイル
-├── INSTRUCTOR_GUIDE.md          # インストラクター向けガイド
 │
 ├── 00_setup/                    # 環境セットアップ
 │   ├── README.md
 │   ├── setup.sql
 │   └── cleanup.sql
 │
-├── 01_getting_started/          # モジュール1
+├── 01_getting_started/          # モジュール1: 基本操作
 │   ├── README.md
 │   ├── getting_started.sql
 │   ├── reset.sql
 │   └── slides/
 │
-├── 02_data_pipelines/           # モジュール2
+├── 02_data_pipelines/           # モジュール2: データパイプライン
 │   ├── README.md
 │   ├── data_pipelines.sql
 │   ├── reset.sql
 │   └── slides/
 │
-├── 03_cortex_ai/                # モジュール3
+├── 03_cortex_ai/                # モジュール3: AI SQL関数
 │   ├── README.md
 │   ├── cortex_ai.sql
 │   ├── reset.sql
 │   └── slides/
 │
-├── 04_governance/               # モジュール4
+├── 04_governance/               # モジュール4: ガバナンス
 │   ├── README.md
 │   ├── governance.sql
 │   ├── reset.sql
 │   └── slides/
 │
-├── 05_apps_collaboration/       # モジュール5
+├── 05_apps_collaboration/       # モジュール5: Marketplace連携
 │   ├── README.md
 │   ├── apps_collaboration.sql
 │   ├── reset.sql
@@ -171,8 +170,7 @@ Zero-to-Snowflake-Handson/
 └── resources/                   # 追加リソース
     ├── architecture.md
     ├── faq.md
-    ├── troubleshooting.md
-    └── presenter_script.md
+    └── troubleshooting.md
 ```
 
 ---
