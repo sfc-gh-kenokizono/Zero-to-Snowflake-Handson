@@ -17,7 +17,8 @@ Copyright(c): 2025 Snowflake Inc. All rights reserved.
 -- セッションのクエリタグを設定
 ALTER SESSION SET query_tag = '{"origin":"sf_sit-is","name":"tb_zts","version":{"major":1, "minor":1},"attributes":{"is_quickstart":1, "source":"tastybytes", "vignette": "governance_with_horizon"}}';
 
--- まず、ワークシートのコンテキストを設定しましょう
+-- まず、コンテキストを設定しましょう
+-- 💡 Workspacesの場合、画面右上のコンテキストパネルからも設定可能です
 USE ROLE useradmin;
 USE DATABASE tb_101;
 USE WAREHOUSE tb_dev_wh;
@@ -102,8 +103,7 @@ GRANT ROLE tb_data_steward TO USER IDENTIFIER($my_user);
 
 /*
     最後に、以下のクエリを実行して、新しく作成したロールを使用しましょう！
-    --> あるいは、ワークシートUIの「Select role and warehouse」ボタンをクリックして、
-        「tb_data_steward」を選択することでロールを使用することもできます。
+    --> あるいは、Workspacesの右上コンテキストパネルから「tb_data_steward」を選択することもできます。
 */
 USE ROLE tb_data_steward;
 

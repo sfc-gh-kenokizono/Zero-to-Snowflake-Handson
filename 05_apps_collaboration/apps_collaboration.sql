@@ -14,7 +14,8 @@ Copyright(c): 2025 Snowflake Inc. All rights reserved.
 -- まず、セッションのクエリタグを設定します
 ALTER SESSION SET query_tag = '{"origin":"sf_sit-is","name":"tb_zts","version":{"major":1, "minor":1},"attributes":{"is_quickstart":1, "source":"tastybytes", "vignette": "apps_and_collaboration"}}';
 
--- 次に、ワークシートのコンテキストを設定します
+-- 次に、コンテキストを設定します
+-- 💡 Workspacesの場合、画面右上のコンテキストパネルからも設定可能です
 USE DATABASE tb_101;
 USE ROLE accountadmin;
 USE WAREHOUSE tb_de_wh;

@@ -680,6 +680,18 @@ GRANT USAGE ON SCHEMA snowflake_intelligence.agents TO ROLE TB_DEV;
 GRANT CREATE AGENT ON SCHEMA snowflake_intelligence.agents TO ROLE TB_DEV;
 
 /*--
+ • ウェアハウスのスケールダウン（コスト最適化）
+--*/
+
+-- 初期ロード完了後、ウェアハウスをXSmallにスケールダウン
+ALTER WAREHOUSE tb_de_wh SET WAREHOUSE_SIZE = 'XSMALL';
+
+-- ウェアハウスを一時停止（コスト節約）
+ALTER WAREHOUSE tb_de_wh SUSPEND;
+ALTER WAREHOUSE tb_analyst_wh SUSPEND;
+ALTER WAREHOUSE tb_cortex_wh SUSPEND;
+
+/*--
  セットアップ完了メッセージ
 --*/
 SELECT '✅ セットアップが完了しました！次のモジュールに進んでください。' AS message;

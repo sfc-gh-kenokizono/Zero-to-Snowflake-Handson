@@ -10,9 +10,6 @@
 |---------|------|--------|
 | [`data_pipelines.sql`](./data_pipelines.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
 | [`reset.sql`](./reset.sql) | リセット用 | やり直したい時に実行 |
-| `slides/02_simple_data_pipelines.pdf` | 参考PDF | ※外部リンクあり、本READMEを推奨 |
-
-> ⚠️ **注意**: PDFは参考資料です。手順はこのREADMEと`data_pipelines.sql`に従ってください。
 
 ---
 
@@ -24,15 +21,13 @@
 
 ## 🎓 学習内容
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  1. 外部ステージ     → S3からデータを取り込む                   │
-│  2. VARIANTデータ    → 半構造化JSONを操作する                   │
-│  3. Dynamic Tables   → 自動更新されるテーブルを作成             │
-│  4. パイプライン構築 → 複数のDynamic Tablesを連携               │
-│  5. DAG可視化        → データフローをグラフで確認               │
-└─────────────────────────────────────────────────────────────────┘
-```
+| # | トピック | 内容 |
+|---|---------|------|
+| 1 | 外部ステージ | S3からデータを取り込む |
+| 2 | VARIANTデータ | 半構造化JSONを操作する |
+| 3 | Dynamic Tables | 自動更新されるテーブルを作成 |
+| 4 | パイプライン構築 | 複数のDynamic Tablesを連携 |
+| 5 | DAG可視化 | データフローをグラフで確認 |
 
 ---
 
@@ -56,10 +51,15 @@ graph LR
 ### SQLファイルを開く
 
 1. **Snowsight** にログイン
-2. **Worksheets** → **+** → **SQL Worksheet**
-3. [`data_pipelines.sql`](./data_pipelines.sql) の内容をコピー＆ペースト
+2. **Projects** → **Workspaces** でハンズオン用ワークスペースを開く
+3. ファイルエクスプローラーで `02_data_pipelines/data_pipelines.sql` を開く
 
 ### コンテキストを設定
+
+画面右上のコンテキストパネルで以下を設定：
+- **Role**: `TB_DATA_ENGINEER`
+- **Database**: `TB_101`
+- **Warehouse**: `TB_DE_WH`
 
 ```sql
 -- data_pipelines.sql: 22-24行目
@@ -78,15 +78,11 @@ USE WAREHOUSE tb_de_wh;
 
 ### 1-1. ステージとは？
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  ステージ = データファイルの保存場所                     │
-│                                                         │
-│  ・S3、Azure Blob、GCSなどへの参照                      │
-│  ・COPY INTO でテーブルにロード                         │
-│  ・ファイル形式（CSV、JSON等）を指定                    │
-└─────────────────────────────────────────────────────────┘
-```
+**ステージ** = データファイルの保存場所
+
+- S3、Azure Blob、GCSなどへの参照
+- `COPY INTO` でテーブルにロード
+- ファイル形式（CSV、JSON等）を指定
 
 ### 1-2. ステージを作成
 
@@ -194,15 +190,11 @@ FROM
 
 ### Dynamic Tableとは？
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  Dynamic Table = 自動更新されるマテリアライズドビュー    │
-│                                                         │
-│  ✅ 宣言的: SELECTでデータを定義                        │
-│  ✅ 自動更新: ソースが変わると自動で反映                │
-│  ✅ LAG指定: 更新頻度を制御（例: 1分ごと）              │
-└─────────────────────────────────────────────────────────┘
-```
+**Dynamic Table** = 自動更新されるマテリアライズドビュー
+
+- ✅ **宣言的**: SELECTでデータを定義
+- ✅ **自動更新**: ソースが変わると自動で反映
+- ✅ **LAG指定**: 更新頻度を制御（例: 1分ごと）
 
 ### 3-1. ingredient Dynamic Tableを作成
 
@@ -342,23 +334,16 @@ ORDER BY total_ingredients_used DESC;
 2. **INGREDIENT** をクリック
 3. **Graph** タブをクリック
 
-### 見えるもの
+### DAG View（見えるもの）
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                        DAG View                         │
-│                                                         │
-│   menu_staging                                          │
-│        │                                                │
-│        ▼                                                │
-│   ingredient (LAG: 1min)                                │
-│        │                                                │
-│        ▼                                                │
-│   ingredient_to_menu_lookup (LAG: 1min)                 │
-│        │                                                │
-│        ▼                                                │
-│   ingredient_usage_by_truck (LAG: 2min)                 │
-└─────────────────────────────────────────────────────────┘
+menu_staging
+     ↓
+ingredient (LAG: 1min)
+     ↓
+ingredient_to_menu_lookup (LAG: 1min)
+     ↓
+ingredient_usage_by_truck (LAG: 2min)
 ```
 
 > 💡 各ノードをクリックすると、LAG設定や最終更新時刻を確認できます

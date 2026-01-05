@@ -10,9 +10,6 @@
 |---------|------|--------|
 | [`cortex_ai.sql`](./cortex_ai.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
 | [`reset.sql`](./reset.sql) | リセット用 | やり直したい時に実行 |
-| `slides/03_snowflake_cortex_ai.pdf` | 参考PDF | ※外部リンクあり、本READMEを推奨 |
-
-> ⚠️ **注意**: PDFは参考資料です。手順はこのREADMEと`cortex_ai.sql`に従ってください。
 
 ---
 
@@ -24,31 +21,23 @@
 
 ## 🎓 学習内容
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  1. SENTIMENT()        → レビューの感情を数値化         │
-│  2. AI_CLASSIFY()      → テーマ別に自動分類             │
-│  3. EXTRACT_ANSWER()   → 具体的な苦情・賞賛を抽出       │
-│  4. AI_SUMMARIZE_AGG() → ブランド別に要約を生成         │
-└─────────────────────────────────────────────────────────┘
-```
+| # | 関数 | 内容 |
+|---|------|------|
+| 1 | `SENTIMENT()` | レビューの感情を数値化 |
+| 2 | `AI_CLASSIFY()` | テーマ別に自動分類 |
+| 3 | `EXTRACT_ANSWER()` | 具体的な苦情・賞賛を抽出 |
+| 4 | `AI_SUMMARIZE_AGG()` | ブランド別に要約を生成 |
 
 ---
 
 ## ✨ Cortex AI SQL関数とは？
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                                                         │
-│   「SQLを書くだけでAI分析ができる」                      │
-│                                                         │
-│   ✅ 機械学習の知識不要                                 │
-│   ✅ モデルのデプロイ不要                               │
-│   ✅ データを外部に出さない（セキュア）                 │
-│   ✅ 大規模データに対応                                 │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
-```
+> **「SQLを書くだけでAI分析ができる」**
+
+- ✅ 機械学習の知識不要
+- ✅ モデルのデプロイ不要
+- ✅ データを外部に出さない（セキュア）
+- ✅ 大規模データに対応
 
 ---
 
@@ -59,10 +48,15 @@
 ### SQLファイルを開く
 
 1. **Snowsight** にログイン
-2. **Worksheets** → **+** → **SQL Worksheet**
-3. [`cortex_ai.sql`](./cortex_ai.sql) の内容をコピー＆ペースト
+2. **Projects** → **Workspaces** でハンズオン用ワークスペースを開く
+3. ファイルエクスプローラーで `03_cortex_ai/cortex_ai.sql` を開く
 
 ### コンテキストを設定
+
+画面右上のコンテキストパネルで以下を設定：
+- **Role**: `TB_ANALYST`
+- **Database**: `TB_101`
+- **Warehouse**: `TB_ANALYST_WH`
 
 ```sql
 -- cortex_ai.sql: 22-24行目
@@ -149,17 +143,13 @@ ORDER BY truck_brand_name, number_of_reviews DESC;
 
 ### AI_CLASSIFY() の仕組み
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  入力:                                                  │
-│    レビュー: "The tacos were amazing and fresh!"       │
-│    カテゴリ: ['Food Quality', 'Service', 'Pricing']    │
-│                                                         │
-│  出力: 'Food Quality'                                   │
-│                                                         │
-│  ※ キーワードマッチではなく、AIが意味を理解して分類     │
-└─────────────────────────────────────────────────────────┘
-```
+| | 内容 |
+|---|------|
+| **入力（レビュー）** | "The tacos were amazing and fresh!" |
+| **入力（カテゴリ）** | `['Food Quality', 'Service', 'Pricing']` |
+| **出力** | `'Food Quality'` |
+
+※ キーワードマッチではなく、AIが意味を理解して分類
 
 > 💡 **ポイント**: 単純なキーワード検索ではなく、**AIが意味を理解**
 
@@ -192,16 +182,11 @@ LIMIT 10000;
 
 ### EXTRACT_ANSWER() の仕組み
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  入力:                                                  │
-│    レビュー: "I waited 30 minutes for my order but     │
-│              the friendly staff was saving grace..."    │
-│    質問: "What complaint is mentioned?"                 │
-│                                                         │
-│  出力: "waited 30 minutes for order"                    │
-└─────────────────────────────────────────────────────────┘
-```
+| | 内容 |
+|---|------|
+| **入力（レビュー）** | "I waited 30 minutes for my order but the friendly staff was saving grace..." |
+| **入力（質問）** | "What complaint is mentioned?" |
+| **出力** | "waited 30 minutes for order" |
 
 > 💡 **ポイント**: 長文から**具体的なアクションアイテム**を抽出
 
@@ -232,21 +217,11 @@ GROUP BY truck_brand_name;
 
 ### AI_SUMMARIZE_AGG() の仕組み
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  入力: 100件のレビュー                                  │
-│                                                         │
-│  出力:                                                  │
-│  "Customers praise the fresh ingredients and fast      │
-│   service. Common complaints include long wait times   │
-│   during peak hours and limited menu options..."       │
-│                                                         │
-│  日本語訳:                                              │
-│  「顧客は新鮮な食材と迅速なサービスを称賛しています。   │
-│   一般的な不満には、ピーク時の長い待ち時間と            │
-│   限られたメニューオプションが含まれます...」           │
-└─────────────────────────────────────────────────────────┘
-```
+| | 内容 |
+|---|------|
+| **入力** | 100件のレビュー |
+| **出力（英語）** | "Customers praise the fresh ingredients and fast service. Common complaints include long wait times during peak hours and limited menu options..." |
+| **出力（日本語訳）** | 「顧客は新鮮な食材と迅速なサービスを称賛しています。一般的な不満には、ピーク時の長い待ち時間と限られたメニューオプションが含まれます...」 |
 
 > 💡 **ポイント**: エグゼクティブ向けの**簡潔なサマリー**を自動生成
 

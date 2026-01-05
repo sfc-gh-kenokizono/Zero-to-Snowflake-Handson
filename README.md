@@ -107,22 +107,31 @@ Dynamic Tablesによる宣言的ETLを体験できます。
 - Snowflakeアカウント（トライアルアカウント可）
 - ACCOUNTADMIN ロールへのアクセス
 - Webブラウザ（Chrome推奨）
+- Git（リポジトリのクローン用）
 
 ### セットアップ手順
 
-1. **Snowsightにログイン**
+1. **リポジトリをクローン**
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. **Snowsightにログイン**
    - [app.snowflake.com](https://app.snowflake.com) にアクセス
 
-2. **ワークシートを作成**
-   - 左メニューから「Worksheets」を選択
-   - 「+」ボタンで新規ワークシートを作成
+3. **Workspacesでリポジトリを接続**
+   - 左メニューから **Projects** → **Workspaces** を選択
+   - **+ Workspace** をクリック
+   - **Create from Git Repository** を選択
+   - Gitリポジトリの情報を入力して接続
 
-3. **セットアップSQLを実行**
-   - `00_setup/setup.sql` の内容をワークシートにコピー
-   - 全体を選択して実行（約10-15分）
+4. **セットアップSQLを実行**
+   - Workspacesで `00_setup/setup.sql` を開く
+   - **Run All** ボタンで全体を実行（約10-15分）
 
-4. **各モジュールを順番に実行**
+5. **各モジュールを順番に実行**
    - 01 → 02 → 03 → 04 → 05 の順番で進めてください
+   - 各モジュールのSQLファイルをWorkspacesで開いて実行します
 
 ---
 
@@ -140,32 +149,27 @@ Zero-to-Snowflake-Handson/
 ├── 01_getting_started/          # モジュール1: 基本操作
 │   ├── README.md
 │   ├── getting_started.sql
-│   ├── reset.sql
-│   └── slides/
+│   └── reset.sql
 │
 ├── 02_data_pipelines/           # モジュール2: データパイプライン
 │   ├── README.md
 │   ├── data_pipelines.sql
-│   ├── reset.sql
-│   └── slides/
+│   └── reset.sql
 │
 ├── 03_cortex_ai/                # モジュール3: AI SQL関数
 │   ├── README.md
 │   ├── cortex_ai.sql
-│   ├── reset.sql
-│   └── slides/
+│   └── reset.sql
 │
 ├── 04_governance/               # モジュール4: ガバナンス
 │   ├── README.md
 │   ├── governance.sql
-│   ├── reset.sql
-│   └── slides/
+│   └── reset.sql
 │
 ├── 05_apps_collaboration/       # モジュール5: Marketplace連携
 │   ├── README.md
 │   ├── apps_collaboration.sql
-│   ├── reset.sql
-│   └── slides/
+│   └── reset.sql
 │
 └── resources/                   # 追加リソース
     ├── architecture.md

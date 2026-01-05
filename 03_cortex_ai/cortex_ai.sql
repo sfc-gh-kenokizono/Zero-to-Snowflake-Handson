@@ -17,6 +17,7 @@ ALTER SESSION SET query_tag = '{"origin":"sf_sit-is","name":"tb_zts","version":{
 /*
     AISQL関数を活用して顧客レビューからインサイトを得る意図でTastyBytesデータアナリストの
     役割を担うので、コンテキストを適切に設定しましょう。
+    💡 Workspacesの場合、画面右上のコンテキストパネルからも設定可能です
 */
 
 USE ROLE tb_analyst;

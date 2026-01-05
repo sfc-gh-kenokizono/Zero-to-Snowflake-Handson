@@ -18,10 +18,10 @@
 SHOW TABLES LIKE '%table_name%';
 SHOW VIEWS LIKE '%view_name%';
 
--- 2. 現在のロール確認
+-- 2. 現在のロール確認（Workspacesの右上コンテキストパネルでも確認可能）
 SELECT CURRENT_ROLE();
 
--- 3. 適切なロールに切り替え
+-- 3. 適切なロールに切り替え（Workspacesのコンテキストパネルからも変更可能）
 USE ROLE accountadmin;  -- または適切なロール
 
 -- 4. 権限の確認
@@ -52,13 +52,13 @@ ALTER WAREHOUSE tb_de_wh SET AUTO_RESUME = TRUE;
 **解決方法**:
 1. 構文を確認（カンマ、括弧の閉じ忘れなど）
 2. オブジェクト名のスペルを確認
-3. データベース/スキーマのコンテキストを確認
+3. データベース/スキーマのコンテキストを確認（Workspacesの右上コンテキストパネルでも確認可能）
 
 ```sql
 -- コンテキスト確認
 SELECT CURRENT_DATABASE(), CURRENT_SCHEMA();
 
--- コンテキスト設定
+-- コンテキスト設定（Workspacesのコンテキストパネルからも変更可能）
 USE DATABASE tb_101;
 USE SCHEMA raw_pos;
 ```
@@ -71,7 +71,7 @@ USE SCHEMA raw_pos;
 
 **解決方法**:
 ```sql
--- 1. 必要な権限を持つロールに切り替え
+-- 1. 必要な権限を持つロールに切り替え（Workspacesのコンテキストパネルからも変更可能）
 USE ROLE accountadmin;
 
 -- 2. 権限を付与（管理者として）

@@ -18,6 +18,7 @@ ALTER SESSION SET query_tag = '{"origin":"sf_sit-is","name":"tb_zts","version":{
 /*
     生のメニューデータでデータパイプラインを作成する意図でTastyBytesデータエンジニアの役割を担うので、
     コンテキストを適切に設定しましょう。
+    💡 Workspacesの場合、画面右上のコンテキストパネルからも設定可能です
 */
 USE DATABASE tb_101;
 USE ROLE tb_data_engineer;

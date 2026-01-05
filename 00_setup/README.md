@@ -66,28 +66,32 @@ graph TB
 
 ---
 
-## Step 2: SQLワークシートを作成
+## Step 2: Workspacesでリポジトリを開く
 
-1. 左メニューの **Worksheets** をクリック
-2. 右上の **+** → **SQL Worksheet** を選択
+1. 左メニューの **Projects** → **Workspaces** をクリック
+2. ハンズオン用のワークスペースを選択（未作成の場合は [メインREADME](../README.md) を参照）
 
 ---
 
 ## Step 3: セットアップスクリプトを実行
 
-### 3-1. スクリプトをコピー
+### 3-1. ファイルを開く
 
-[`setup.sql`](./setup.sql) の内容をすべてコピーします。
+Workspacesのファイルエクスプローラーで `00_setup/setup.sql` を開きます。
 
-### 3-2. ワークシートに貼り付け
+### 3-2. ロールとウェアハウスを設定
 
-作成したワークシートに貼り付けます。
+画面右上のコンテキストパネルで以下を設定：
+- **Role**: `ACCOUNTADMIN`
+- **Warehouse**: 任意（セットアップ中に作成されます）
 
-### 3-3. 全選択して実行
+### 3-3. 全体を実行
 
 ```
-Mac:     Cmd + A → Cmd + Enter
-Windows: Ctrl + A → Ctrl + Enter
+画面上部の「Run All」ボタンをクリック
+または
+Mac:     Cmd + Shift + Enter
+Windows: Ctrl + Shift + Enter
 ```
 
 > ⏱️ 約10-15分かかります（データロードのため）

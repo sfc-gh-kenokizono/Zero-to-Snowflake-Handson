@@ -11,6 +11,7 @@ Zero to Snowflake ハンズオンに関するよくある質問と回答です�
 **A:** 以下を確認してください：
 
 1. **ロールの確認**: `ACCOUNTADMIN`または`SYSADMIN`で実行していますか？
+   - Workspacesの右上コンテキストパネルで確認
    ```sql
    SELECT CURRENT_ROLE();
    ```
@@ -21,6 +22,7 @@ Zero to Snowflake ハンズオンに関するよくある質問と回答です�
    ```
 
 3. **ウェアハウスの確認**: ウェアハウスが選択されていますか？
+   - Workspacesの右上コンテキストパネルで確認
 
 ### Q: データロードに時間がかかります
 
@@ -86,6 +88,8 @@ USE ROLE tb_data_engineer;
 GRANT ROLE my_role TO USER <your_username>;
 ```
 
+> 💡 Workspacesのコンテキストパネルでロールを変更すると、付与されていないロールは表示されません
+
 ---
 
 ## 🤖 Cortex AI関連
@@ -137,9 +141,11 @@ ALTER DYNAMIC TABLE my_dt REFRESH;
 
 **A:** Snowsightのカタログから確認してください：
 
-1. 左メニュー「Catalog」をクリック
+1. 左メニュー「Data」→「Databases」をクリック
 2. データベース → スキーマ → ダイナミックテーブルを展開
 3. テーブルを選択し「Graph」タブをクリック
+
+> 💡 WorkspacesからもDatabase Explorerパネルでアクセス可能です
 
 ---
 
