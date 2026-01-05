@@ -75,9 +75,12 @@ graph TB
 
 ## Step 3: セットアップスクリプトを実行
 
-### 3-1. ファイルを開く
+### 3-1. SQLファイルを準備
 
-Workspacesのファイルエクスプローラーで `00_setup/setup.sql` を開きます。
+1. GitHubで [`00_setup/setup.sql`](./setup.sql) を開く
+2. **Raw** ボタンをクリックして全文をコピー
+3. Snowsightで **Projects** → **Worksheets** → **+** で新規ワークシートを作成
+4. コピーした内容をペースト
 
 ### 3-2. ロールとウェアハウスを設定
 

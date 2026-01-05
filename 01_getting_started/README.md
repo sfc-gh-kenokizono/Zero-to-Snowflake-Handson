@@ -37,11 +37,12 @@
 
 ## Step 0: 準備
 
-### SQLファイルを開く
+### SQLファイルを準備
 
 1. **Snowsight** にログイン
-2. **Projects** → **Workspaces** でハンズオン用ワークスペースを開く
-3. ファイルエクスプローラーで `01_getting_started/getting_started.sql` を開く
+2. GitHubで [`getting_started.sql`](./getting_started.sql) を開き、**Raw** → 全文コピー
+3. **Projects** → **Worksheets** → **+** で新規ワークシートを作成
+4. コピーした内容をペースト
 
 ### コンテキストを設定
 

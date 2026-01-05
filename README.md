@@ -107,31 +107,21 @@ Dynamic Tablesによる宣言的ETLを体験できます。
 - Snowflakeアカウント（トライアルアカウント可）
 - ACCOUNTADMIN ロールへのアクセス
 - Webブラウザ（Chrome推奨）
-- Git（リポジトリのクローン用）
 
 ### セットアップ手順
 
-1. **リポジトリをクローン**
-   ```bash
-   git clone <repository-url>
-   ```
-
-2. **Snowsightにログイン**
+1. **Snowsightにログイン**
    - [app.snowflake.com](https://app.snowflake.com) にアクセス
 
-3. **Workspacesでリポジトリを接続**
-   - 左メニューから **Projects** → **Workspaces** を選択
-   - **+ Workspace** をクリック
-   - **Create from Git Repository** を選択
-   - Gitリポジトリの情報を入力して接続
+2. **セットアップSQLを実行**
+   - GitHubで [`00_setup/setup.sql`](./00_setup/setup.sql) を開く
+   - **Raw** ボタンをクリックして全文をコピー
+   - Snowsightで **Projects** → **Worksheets** → **+** で新規ワークシート作成
+   - コピーした内容をペーストして **Run All** で実行（約10-15分）
 
-4. **セットアップSQLを実行**
-   - Workspacesで `00_setup/setup.sql` を開く
-   - **Run All** ボタンで全体を実行（約10-15分）
-
-5. **各モジュールを順番に実行**
+3. **各モジュールを順番に実行**
    - 01 → 02 → 03 → 04 → 05 の順番で進めてください
-   - 各モジュールのSQLファイルをWorkspacesで開いて実行します
+   - 各モジュールのREADMEの手順に従い、SQLをコピペして実行
 
 ---
 
