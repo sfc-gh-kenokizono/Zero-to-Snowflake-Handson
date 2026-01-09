@@ -37,7 +37,7 @@
 
 ### 実行指示
 
-> 「`00_setup`フォルダの`01_setup.sql`を開いてください。
+> 「`00_setup`フォルダの`00_setup.sql`を開いてください。
 > 
 > 全体を選択して実行します。Macの方はCommand+A、Windowsの方はCtrl+Aで全選択できます。
 > 

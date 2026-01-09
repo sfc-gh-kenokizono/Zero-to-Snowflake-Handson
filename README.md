@@ -114,7 +114,7 @@ Dynamic Tablesによる宣言的ETLを体験できます。
    - [app.snowflake.com](https://app.snowflake.com) にアクセス
 
 2. **セットアップSQLを実行**
-   - GitHubで [`00_setup/01_setup.sql`](./00_setup/01_setup.sql) を開く
+   - GitHubで [`00_setup/00_setup.sql`](./00_setup/00_setup.sql) を開く
    - **Raw** ボタンをクリックして全文をコピー
    - Snowsightで **Projects** → **Worksheets** → **+** で新規ワークシート作成
    - コピーした内容をペーストして **Run All** で実行（約10-15分）
@@ -133,33 +133,33 @@ Zero-to-Snowflake-Handson/
 │
 ├── 00_setup/                    # 環境セットアップ
 │   ├── README.md
-│   ├── 01_setup.sql
-│   └── 02_cleanup.sql
+│   ├── 00_setup.sql
+│   └── 00_cleanup.sql
 │
 ├── 01_getting_started/          # モジュール1: 基本操作
 │   ├── README.md
 │   ├── 01_getting_started.sql
-│   └── 02_reset.sql
+│   └── 01_reset.sql
 │
 ├── 02_data_pipelines/           # モジュール2: データパイプライン
 │   ├── README.md
-│   ├── 01_data_pipelines.sql
+│   ├── 02_data_pipelines.sql
 │   └── 02_reset.sql
 │
 ├── 03_cortex_ai/                # モジュール3: AI SQL関数
 │   ├── README.md
-│   ├── 01_cortex_ai.sql
-│   └── 02_reset.sql
+│   ├── 03_cortex_ai.sql
+│   └── 03_reset.sql
 │
 ├── 04_governance/               # モジュール4: ガバナンス
 │   ├── README.md
-│   ├── 01_governance.sql
-│   └── 02_reset.sql
+│   ├── 04_governance.sql
+│   └── 04_reset.sql
 │
 ├── 05_apps_collaboration/       # モジュール5: Marketplace連携
 │   ├── README.md
-│   ├── 01_apps_collaboration.sql
-│   └── 02_reset.sql
+│   ├── 05_apps_collaboration.sql
+│   └── 05_reset.sql
 │
 └── resources/                   # 追加リソース
     ├── architecture.md

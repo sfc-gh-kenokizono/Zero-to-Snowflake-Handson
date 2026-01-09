@@ -8,8 +8,8 @@
 
 | ファイル | 説明 | 使い方 |
 |---------|------|--------|
-| [`01_setup.sql`](./01_setup.sql) | **セットアップスクリプト** | Snowsightで全選択→実行 |
-| [`02_cleanup.sql`](./02_cleanup.sql) | クリーンアップ用 | ハンズオン終了後に実行 |
+| [`00_setup.sql`](./00_setup.sql) | **セットアップスクリプト** | Snowsightで全選択→実行 |
+| [`00_cleanup.sql`](./00_cleanup.sql) | クリーンアップ用 | ハンズオン終了後に実行 |
 
 ---
 
@@ -77,7 +77,7 @@ graph TB
 
 ### 3-1. SQLファイルを準備
 
-1. GitHubで [`00_setup/01_setup.sql`](./01_setup.sql) を開く
+1. GitHubで [`00_setup/00_setup.sql`](./00_setup.sql) を開く
 2. **Raw** ボタンをクリックして全文をコピー
 3. Snowsightで **Projects** → **Worksheets** → **+** で新規ワークシートを作成
 4. コピーした内容をペースト
@@ -171,7 +171,7 @@ ALTER WAREHOUSE tb_de_wh RESUME;
 ハンズオン終了後、環境を削除する場合：
 
 ```sql
--- 02_cleanup.sql を実行
+-- 00_cleanup.sql を実行
 -- または以下を実行
 
 USE ROLE accountadmin;

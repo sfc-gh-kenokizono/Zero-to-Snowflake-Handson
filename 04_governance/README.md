@@ -8,8 +8,8 @@
 
 | ファイル | 説明 | 使い方 |
 |---------|------|--------|
-| [`01_governance.sql`](./01_governance.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
-| [`02_reset.sql`](./02_reset.sql) | リセット用 | やり直したい時に実行 |
+| [`04_governance.sql`](./04_governance.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
+| [`04_reset.sql`](./04_reset.sql) | リセット用 | やり直したい時に実行 |
 
 ---
 
@@ -59,7 +59,7 @@ graph TB
 ### SQLファイルを準備
 
 1. **Snowsight** にログイン
-2. GitHubで [`01_governance.sql`](./01_governance.sql) を開き、**Raw** → 全文コピー
+2. GitHubで [`04_governance.sql`](./04_governance.sql) を開き、**Raw** → 全文コピー
 3. **Projects** → **Worksheets** → **+** で新規ワークシートを作成
 4. コピーした内容をペースト
 
@@ -71,7 +71,7 @@ graph TB
 - **Warehouse**: `TB_DEV_WH`
 
 ```sql
--- 01_governance.sql: 21-23行目
+-- 04_governance.sql: 21-23行目
 USE ROLE useradmin;
 USE DATABASE tb_101;
 USE WAREHOUSE tb_dev_wh;
@@ -81,7 +81,7 @@ USE WAREHOUSE tb_dev_wh;
 
 ## Step 1: ロールベースアクセス制御（RBAC）
 
-📍 **SQLファイル**: [`01_governance.sql`](./01_governance.sql) の **25〜117行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **25〜117行目**
 
 ### RBACとは？
 
@@ -149,7 +149,7 @@ SELECT TOP 100 * FROM raw_customer.customer_loyalty;
 
 ## Step 2: 自動タグ付けによるPII検出
 
-📍 **SQLファイル**: [`01_governance.sql`](./01_governance.sql) の **119〜203行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **119〜203行目**
 
 ### 自動タグ付けとは？
 
@@ -216,7 +216,7 @@ FROM TABLE(INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS('raw_customer.customer_
 
 ## Step 3: マスキングポリシー（列レベルセキュリティ）
 
-📍 **SQLファイル**: [`01_governance.sql`](./01_governance.sql) の **205〜257行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **205〜257行目**
 
 ### マスキングポリシーとは？
 
@@ -275,7 +275,7 @@ SELECT TOP 100 * FROM raw_customer.customer_loyalty;
 
 ## Step 4: 行アクセスポリシー（行レベルセキュリティ）
 
-📍 **SQLファイル**: [`01_governance.sql`](./01_governance.sql) の **259〜325行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **259〜325行目**
 
 ### 行アクセスポリシーとは？
 
@@ -331,7 +331,7 @@ SELECT TOP 100 * FROM raw_customer.customer_loyalty;
 
 ## Step 5: データメトリック関数（DMF）
 
-📍 **SQLファイル**: [`01_governance.sql`](./01_governance.sql) の **327〜404行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **327〜404行目**
 
 ### DMFとは？
 
@@ -388,7 +388,7 @@ ALTER TABLE raw_pos.order_detail
 
 ## Step 6: トラストセンター
 
-📍 **SQLファイル**: [`01_governance.sql`](./01_governance.sql) の **406〜482行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **406〜482行目**
 
 ### トラストセンターとは？
 
@@ -433,7 +433,7 @@ SELECT '🎉 Module 04 完了！次は Module 05: アプリとコラボレーシ
 
 ## 🔄 リセット
 
-やり直したい場合は [`02_reset.sql`](./02_reset.sql) を実行してください。
+やり直したい場合は [`04_reset.sql`](./04_reset.sql) を実行してください。
 
 ---
 
