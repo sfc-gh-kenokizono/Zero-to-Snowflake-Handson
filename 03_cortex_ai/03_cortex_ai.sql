@@ -29,13 +29,49 @@ USE WAREHOUSE tb_analyst_wh;
   ===================================================================================
    すべてのフードトラックブランドの顧客センチメントを分析して、最もパフォーマンスの高い
    トラックを特定し、フリート全体の顧客満足度メトリクスを作成します。
-   Cortex Playgroundでは、個々のレビューを手動で分析しました。ここでは、
-   SENTIMENT()関数を使用して、Snowflakeの公式センチメント範囲に従って、
-   顧客レビューを-1（ネガティブ）から+1（ポジティブ）まで自動的にスコアリングします。
+   
+   SENTIMENT()関数を使用して、顧客レビューを-1（ネガティブ）から+1（ポジティブ）まで
+   自動的にスコアリングします。
 -----------------------------------------------------------------------------------*/
 
 -- ビジネス上の質問: 「各トラックブランドに対して顧客はどのように感じているか？」
--- このクエリを実行して、フードトラックネットワーク全体の顧客センチメントを分析し、フィードバックを分類してください
+
+-- ============================================
+-- Step 1: まず、分析対象のデータを確認しましょう
+-- ============================================
+-- truck_reviews_v にどんなレビューが入っているか見てみます
+
+SELECT 
+    truck_brand_name,
+    primary_city,
+    review,
+    language
+FROM harmonized.truck_reviews_v
+WHERE language = 'en' 
+  AND review IS NOT NULL
+LIMIT 10;
+
+-- ============================================
+-- Step 2: 1件のレビューにSENTIMENT関数を適用
+-- ============================================
+-- SENTIMENT()関数がどのようにスコアを返すか確認します
+-- スコアは -1（ネガティブ）〜 +1（ポジティブ）の範囲です
+
+SELECT 
+    truck_brand_name,
+    LEFT(review, 80) || '...' AS review_preview,
+    SNOWFLAKE.CORTEX.SENTIMENT(review) AS sentiment_score
+FROM harmonized.truck_reviews_v
+WHERE language = 'en' 
+  AND review IS NOT NULL
+LIMIT 10;
+
+-- 💡 ポイント: スコアを見て、ポジティブ/ネガティブな内容と一致しているか確認してください
+
+-- ============================================
+-- Step 3: ブランド別にセンチメントを集計
+-- ============================================
+-- 10,000件のレビューを一括分析し、ブランドごとの顧客満足度を比較します
 
 SELECT
     truck_brand_name,
@@ -46,7 +82,7 @@ SELECT
 FROM (
     SELECT
         truck_brand_name,
-        SNOWFLAKE.CORTEX.SENTIMENT (review) AS sentiment
+        SNOWFLAKE.CORTEX.SENTIMENT(review) AS sentiment
     FROM harmonized.truck_reviews_v
     WHERE
         language ILIKE '%en%'
@@ -71,15 +107,55 @@ ORDER BY total_reviews DESC;
 /*===================================================================================
   2. 顧客フィードバックの分類
   ===================================================================================
-   次に、すべてのレビューを分類して、顧客がサービスのどの側面について最も話しているかを
-   理解しましょう。AI_CLASSIFY()関数を使用します。この関数は、単純なキーワードマッチングではなく、
+   すべてのレビューを分類して、顧客がサービスのどの側面について最も話しているかを
+   理解しましょう。AI_CLASSIFY()関数は、単純なキーワードマッチングではなく、
    AIの理解に基づいて、レビューをユーザー定義のカテゴリに自動的に分類します。
-   このステップでは、顧客フィードバックをビジネスに関連する運用領域に分類し、
-   その分布パターンを分析します。
 -----------------------------------------------------------------------------------*/
 
--- ビジネス上の質問: 「顧客は主に何についてコメントしているか - 食品の品質、サービス、または配達体験？」
--- 分類クエリを実行:
+-- ビジネス上の質問: 「顧客は主に何についてコメントしているか？」
+
+-- ============================================
+-- Step 1: AI_CLASSIFY関数の動作を確認
+-- ============================================
+-- まず少数のレビューで、どのようにカテゴリ分類されるか見てみます
+
+SELECT
+    truck_brand_name,
+    LEFT(review, 60) || '...' AS review_preview,
+    AI_CLASSIFY(
+        review,
+        ['Food Quality', 'Pricing', 'Service Experience', 'Staff Behavior']
+    ) AS classification_result
+FROM harmonized.truck_reviews_v
+WHERE language = 'en' 
+  AND review IS NOT NULL
+  AND LENGTH(review) > 30
+LIMIT 5;
+
+-- 💡 ポイント: classification_result の中に labels と probabilities が返されます
+--    :labels[0] で最も可能性の高いカテゴリを取得できます
+
+-- ============================================
+-- Step 2: 最も可能性の高いカテゴリだけを抽出
+-- ============================================
+
+SELECT
+    truck_brand_name,
+    LEFT(review, 60) || '...' AS review_preview,
+    AI_CLASSIFY(
+        review,
+        ['Food Quality', 'Pricing', 'Service Experience', 'Staff Behavior']
+    ):labels[0]::STRING AS feedback_category
+FROM harmonized.truck_reviews_v
+WHERE language = 'en' 
+  AND review IS NOT NULL
+  AND LENGTH(review) > 30
+LIMIT 10;
+
+-- ============================================
+-- Step 3: ブランド別・カテゴリ別に集計
+-- ============================================
+-- 10,000件のレビューを分類し、どのカテゴリの話題が多いかを分析します
 
 WITH classified_reviews AS (
   SELECT
@@ -121,23 +197,44 @@ ORDER BY
 /*===================================================================================
   3. 特定の運用インサイトの抽出
   ===================================================================================
-   次に、非構造化テキストから正確な回答を得るために、EXTRACT_ANSWER()関数を利用します。
-   この強力な関数により、顧客フィードバックに関する特定のビジネス上の質問をして、
-   直接的な回答を受け取ることができます。このステップの目標は、顧客レビューで言及されている
-   正確な運用上の問題を特定し、即座の注意が必要な特定の問題を強調することです。
+   EXTRACT_ANSWER()関数を使用して、非構造化テキストから正確な回答を抽出します。
+   顧客フィードバックに関する特定のビジネス上の質問をして、直接的な回答を受け取れます。
 -----------------------------------------------------------------------------------*/
 
--- ビジネス上の質問: 「各顧客レビュー内で見つかる特定の運用上の問題またはポジティブな言及は何か？」
--- 次のクエリを実行しましょう:
+-- ビジネス上の質問: 「各顧客レビュー内で見つかる具体的な苦情や賞賛は何か？」
 
-  SELECT
+-- ============================================
+-- Step 1: EXTRACT_ANSWER関数の動作を確認
+-- ============================================
+-- まず1件のレビューで、どのように回答が抽出されるか見てみます
+
+SELECT
+    truck_brand_name,
+    review,
+    SNOWFLAKE.CORTEX.EXTRACT_ANSWER(
+        review,
+        'What specific improvement or complaint is mentioned in this review?'
+    ) AS extracted_answer
+FROM harmonized.truck_reviews_v
+WHERE language = 'en'
+  AND review IS NOT NULL
+  AND LENGTH(review) > 50
+LIMIT 3;
+
+-- 💡 ポイント: answer キーに抽出された回答が、score キーに信頼度が返されます
+
+-- ============================================
+-- Step 2: 複数のレビューから具体的なフィードバックを抽出
+-- ============================================
+-- レビュー本文の一部と、抽出された回答を並べて確認します
+
+SELECT
     truck_brand_name,
     primary_city,
     LEFT(review, 100) || '...' AS review_preview,
-    -- LEFT(SNOWFLAKE.CORTEX.AI_TRANSLATE(review, 'en', 'ja'), 100) || '...' AS review_preview_ja,
     SNOWFLAKE.CORTEX.EXTRACT_ANSWER(
         review,
-        'What specific improvement or complaint is mentioned in this review?' -- このレビューで言及されている具体的な改善点または不満は何ですか？
+        'What specific improvement or complaint is mentioned in this review?'
     ) AS specific_feedback
 FROM 
     harmonized.truck_reviews_v
@@ -146,7 +243,10 @@ WHERE
     AND review IS NOT NULL
     AND LENGTH(review) > 50
 ORDER BY truck_brand_name, primary_city ASC
-LIMIT 10000;
+LIMIT 20;
+
+-- 💡 ポイント: 長いレビューから「親切なスタッフが救いだった」「待ち時間が長かった」など
+--    具体的なフィードバックが自動的に抽出されています
 
 /*
     重要なインサイト:
@@ -160,18 +260,46 @@ LIMIT 10000;
 /*===================================================================================
   4. エグゼクティブサマリーの生成
   ===================================================================================
-   最後に、顧客フィードバックの簡潔なサマリーを作成するために、AI_SUMMARIZE_AGG()関数を使用します。
-   この強力な関数は、長い非構造化テキストから短く一貫性のあるサマリーを生成します。
-   このステップの目標は、各トラックブランドの顧客レビューの本質を理解しやすいサマリーに
-   凝縮し、全体的なセンチメントと重要なポイントの迅速な概要を提供することです。
+   AI_SUMMARIZE_AGG()関数を使用して、顧客フィードバックの簡潔なサマリーを作成します。
+   複数のレビューを1つの要約に凝縮し、全体的なセンチメントと重要なポイントを提供します。
 -----------------------------------------------------------------------------------*/
 
 -- ビジネス上の質問: 「各トラックブランドの主要なテーマと全体的なセンチメントは何か？」
--- サマリー化クエリを実行:
+
+-- ============================================
+-- Step 1: 要約対象のレビューを確認
+-- ============================================
+-- まず、どんなレビューが要約対象になるか確認します
+
+SELECT
+    truck_brand_name,
+    review
+FROM harmonized.truck_reviews_v
+WHERE truck_brand_name = 'Kitakata Ramen Bar'  -- 1ブランドに絞って確認
+LIMIT 5;
+
+-- ============================================
+-- Step 2: 1ブランドのレビューを要約
+-- ============================================
+-- AI_SUMMARIZE_AGG()で複数レビューを1つのサマリーに凝縮します
+
+SELECT
+    truck_brand_name,
+    AI_SUMMARIZE_AGG(review) AS review_summary
+FROM harmonized.truck_reviews_v
+WHERE truck_brand_name = 'Kitakata Ramen Bar'
+GROUP BY truck_brand_name;
+
+-- 💡 ポイント: 複数のレビューが1つの簡潔なサマリーになりました
+
+-- ============================================
+-- Step 3: 全ブランドの要約を生成（日本語訳付き）
+-- ============================================
+-- AI_TRANSLATEで日本語に翻訳も可能です
 
 SELECT
   truck_brand_name,
-  AI_SUMMARIZE_AGG (review) AS review_summary,
+  AI_SUMMARIZE_AGG(review) AS review_summary,
   SNOWFLAKE.CORTEX.AI_TRANSLATE(review_summary, 'en', 'ja') AS review_summary_ja
 FROM
   (
@@ -186,13 +314,10 @@ FROM
 GROUP BY
   truck_brand_name;
 
-
 /*
-  重要なインサイト:
-      AI_SUMMARIZE_AGG()関数は、長いレビューを明確なブランドレベルのサマリーに凝縮します。
-      これらのサマリーは、繰り返されるテーマとセンチメントのトレンドを強調し、意思決定者に
-      各フードトラックのパフォーマンスの迅速な概要を提供し、個々のレビューを読むことなく
-      顧客の認識をより速く理解できるようにします。
+  💡 ポイント:
+      AI_SUMMARIZE_AGG()は、長いレビューを明確なブランドレベルのサマリーに凝縮します。
+      エグゼクティブ向けのレポートや、迅速な意思決定に活用できます。
 */
 
 /*************************************************************************************************** 

@@ -72,7 +72,7 @@ USE WAREHOUSE tb_analyst_wh;
 
 ## Step 1: SENTIMENT() - センチメント分析
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **26〜68行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **27〜105行目**
 
 ### ビジネス上の質問
 
@@ -113,7 +113,7 @@ ORDER BY total_reviews DESC;
 
 ## Step 2: AI_CLASSIFY() - 自動分類
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **70〜118行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **107〜195行目**
 
 ### ビジネス上の質問
 
@@ -158,7 +158,7 @@ ORDER BY truck_brand_name, number_of_reviews DESC;
 
 ## Step 3: EXTRACT_ANSWER() - 回答抽出
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **120〜158行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **197〜258行目**
 
 ### ビジネス上の質問
 
@@ -195,7 +195,7 @@ LIMIT 10000;
 
 ## Step 4: AI_SUMMARIZE_AGG() - 要約生成
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **159〜195行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **260〜330行目**
 
 ### ビジネス上の質問
 
