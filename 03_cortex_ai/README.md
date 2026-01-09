@@ -119,7 +119,7 @@ ORDER BY total_reviews DESC;
 
 > 「顧客は主に何についてコメントしているか？」
 
-### 2-1. シンプルなラベル分類
+### 2-1. 具体的なカテゴリでラベル分類
 
 ```sql
 SELECT
@@ -127,14 +127,14 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Service Experience']
+        ['Food Quality', 'Wait Time', 'Price', 'Portion Size']
     ):labels[0]::STRING AS category
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' AND review IS NOT NULL
-LIMIT 20;
+LIMIT 50;
 ```
 
-### 2-2. マルチラベル分類
+### 2-2. カテゴリを変えて試す
 
 ```sql
 SELECT
@@ -142,12 +142,11 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Service Experience', 'Price', 'Wait Time'],
-        {'multi_label': TRUE}
-    ):labels AS categories
+        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money']
+    ):labels[0]::STRING AS category
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' AND review IS NOT NULL
-LIMIT 20;
+LIMIT 50;
 ```
 
 ### AI_CLASSIFY() の仕組み
@@ -155,11 +154,10 @@ LIMIT 20;
 | | 内容 |
 |---|------|
 | **入力（レビュー）** | "The tacos were amazing but I waited 20 minutes" |
-| **入力（カテゴリ）** | `['Food Quality', 'Wait Time']` |
-| **出力（シングル）** | `'Food Quality'` |
-| **出力（マルチ）** | `['Food Quality', 'Wait Time']` |
+| **入力（カテゴリ）** | `['Food Quality', 'Wait Time', 'Price']` |
+| **出力** | `'Food Quality'`（最も該当するカテゴリ） |
 
-> 💡 **ポイント**: `multi_label: TRUE` で複数カテゴリを同時に割り当て可能
+> 💡 **ポイント**: カテゴリの定義次第で、同じレビューでも異なる視点から分類できます
 
 ---
 
