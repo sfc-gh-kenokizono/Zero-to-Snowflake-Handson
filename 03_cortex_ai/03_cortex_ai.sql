@@ -132,7 +132,7 @@ WHERE language = 'en'
   AND LENGTH(review) > 30
 LIMIT 100;
 
--- 💡 ポイント: classification_result の中に labels と probabilities が返されます
+-- 💡 ポイント: classification_result の中に labels が返されます
 --    :labels[0] で最も可能性の高いカテゴリを取得できます
 
 -- ============================================
