@@ -138,7 +138,7 @@ ORDER BY total_sales DESC;
 
 ## Step 2: クエリ結果キャッシュの体験
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **149〜177行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **149〜176行目**
 
 ### 2-1. 同じクエリをもう一度実行
 
@@ -167,7 +167,7 @@ ALTER WAREHOUSE my_wh SET warehouse_size = 'XSmall';
 
 ## Step 3: ゼロコピークローン
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **178〜297行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **178〜296行目**
 
 ### 3-1. テーブルをクローン
 
@@ -236,7 +236,7 @@ ALTER TABLE raw_pos.truck_details DROP COLUMN truck_build;
 
 ## Step 4: UNDROPでデータ復旧
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **298〜323行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **298〜322行目**
 
 ### 4-1. 誤ってテーブルを削除（ドキドキ）
 

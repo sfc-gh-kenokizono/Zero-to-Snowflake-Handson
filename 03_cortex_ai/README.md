@@ -113,7 +113,7 @@ ORDER BY total_reviews DESC;
 
 ## Step 2: AI_CLASSIFY() - 自動分類
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **107〜156行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **107〜157行目**
 
 ### ビジネス上の質問
 
@@ -165,7 +165,7 @@ LIMIT 30;
 
 ## Step 3: EXTRACT_ANSWER() - 回答抽出
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **158〜206行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **158〜207行目**
 
 ### ビジネス上の質問
 
@@ -202,7 +202,7 @@ LIMIT 20;
 
 ## Step 4: AI_SUMMARIZE_AGG() - 要約生成
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **208〜282行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **209〜254行目**
 
 ### ビジネス上の質問
 
