@@ -93,7 +93,7 @@ FROM (
         SNOWFLAKE.CORTEX.SENTIMENT(review) AS sentiment
     FROM harmonized.truck_reviews_v
     WHERE language ILIKE '%en%' AND review IS NOT NULL
-    LIMIT 10000
+    LIMIT 1000
 )
 GROUP BY truck_brand_name
 ORDER BY total_reviews DESC;
@@ -107,7 +107,7 @@ ORDER BY total_reviews DESC;
 | **-0.5 〜 0.5** | ニュートラル 😐 |
 | **-1.0 〜 -0.5** | ネガティブ 😞 |
 
-> 💡 **ポイント**: 1件ずつではなく、**10,000件**を一括分析！
+> 💡 **ポイント**: 1件ずつではなく、**1,000件**を一括分析！
 
 ---
 
@@ -131,7 +131,7 @@ WITH classified_reviews AS (
     ):labels[0] AS feedback_category
   FROM harmonized.truck_reviews_v
   WHERE language ILIKE '%en%' AND review IS NOT NULL AND LENGTH(review) > 30
-  LIMIT 10000
+  LIMIT 1000
 )
 SELECT
   truck_brand_name,
@@ -178,7 +178,7 @@ SELECT
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' AND review IS NOT NULL AND LENGTH(review) > 50
 ORDER BY truck_brand_name, primary_city ASC
-LIMIT 10000;
+LIMIT 20;
 ```
 
 ### EXTRACT_ANSWER() の仕組み
