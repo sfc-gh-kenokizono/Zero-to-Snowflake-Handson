@@ -123,7 +123,7 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Wait Time', 'Price', 'Portion Size']
+        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time']
     ):labels[0]::STRING AS category
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
@@ -143,7 +143,7 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Wait Time', 'Price', 'Portion Size'],
+        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time'],
         {'output_mode': 'multi'}  -- マルチラベルを有効化
     ):labels AS categories
 FROM harmonized.truck_reviews_v
@@ -153,7 +153,7 @@ WHERE language = 'en'
 LIMIT 30;
 
 -- 💡 ポイント: output_mode: 'multi' を指定すると、該当する複数のカテゴリが返されます
---    例: ["Food Quality", "Wait Time"] のように複数のラベルがつきます
+--    例: ["Taste", "Wait Time"] のように複数のラベルがつきます
 
 /*===================================================================================
   3. 特定の運用インサイトの抽出

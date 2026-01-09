@@ -127,7 +127,7 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Wait Time', 'Price', 'Portion Size']
+        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time']
     ):labels[0]::STRING AS category
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' AND review IS NOT NULL
@@ -142,7 +142,7 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Wait Time', 'Price', 'Portion Size'],
+        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time'],
         {'output_mode': 'multi'}
     ):labels AS categories
 FROM harmonized.truck_reviews_v
@@ -155,9 +155,9 @@ LIMIT 30;
 | | 内容 |
 |---|------|
 | **入力（レビュー）** | "The tacos were amazing but I waited 20 minutes" |
-| **入力（カテゴリ）** | `['Food Quality', 'Wait Time', 'Price']` |
-| **出力（シングル）** | `'Food Quality'` |
-| **出力（マルチ）** | `['Food Quality', 'Wait Time']` |
+| **入力（カテゴリ）** | `['Taste', 'Wait Time', 'Staff Friendliness']` |
+| **出力（シングル）** | `'Taste'` |
+| **出力（マルチ）** | `['Taste', 'Wait Time']` |
 
 > 💡 **ポイント**: `output_mode: 'multi'` で複数カテゴリを同時に割り当て可能
 
