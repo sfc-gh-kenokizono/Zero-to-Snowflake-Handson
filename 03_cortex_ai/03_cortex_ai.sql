@@ -165,9 +165,9 @@ LIMIT 30;
 -- ビジネス上の質問: 「各顧客レビュー内で見つかる具体的な苦情や賞賛は何か？」
 
 -- ============================================
--- Step 1: EXTRACT_ANSWER関数の動作を確認
+-- Step 1: レビューから具体的なフィードバックを抽出
 -- ============================================
--- 信頼度(score)が高い回答を5件表示します
+-- 信頼度(score)が高い回答を20件表示します
 
 SELECT 
     truck_brand_name,
@@ -186,38 +186,15 @@ FROM (
     WHERE language = 'en'
       AND review IS NOT NULL
       AND LENGTH(review) > 50
-    LIMIT 100
+    LIMIT 200
 )
-WHERE extracted_answer[0]:score::FLOAT > 0.5
+WHERE extracted_answer[0]:score::FLOAT > 0.3
 ORDER BY score DESC
-LIMIT 5;
-
--- 💡 ポイント: score が高いほど、抽出された回答の信頼度が高いことを示します
-
--- ============================================
--- Step 2: 複数のレビューから具体的なフィードバックを抽出
--- ============================================
--- レビュー本文の一部と、抽出された回答を並べて確認します
-
-SELECT
-    truck_brand_name,
-    primary_city,
-    LEFT(review, 100) || '...' AS review_preview,
-    SNOWFLAKE.CORTEX.EXTRACT_ANSWER(
-        review,
-        'What specific improvement or complaint is mentioned in this review?'
-    ) AS specific_feedback
-FROM 
-    harmonized.truck_reviews_v
-WHERE 
-    language = 'en'
-    AND review IS NOT NULL
-    AND LENGTH(review) > 50
-ORDER BY truck_brand_name, primary_city ASC
 LIMIT 20;
 
--- 💡 ポイント: 長いレビューから「親切なスタッフが救いだった」「待ち時間が長かった」など
---    具体的なフィードバックが自動的に抽出されています
+-- 💡 ポイント: 
+--    - answer: 抽出された具体的なフィードバック
+--    - score: 信頼度（高いほど正確な抽出）
 
 /*
     重要なインサイト:
