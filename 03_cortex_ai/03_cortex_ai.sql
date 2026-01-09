@@ -215,36 +215,7 @@ LIMIT 10;
 
 -- ビジネス上の質問: 「各トラックブランドの主要なテーマと全体的なセンチメントは何か？」
 
--- ============================================
--- Step 1: 要約対象のレビューを確認
--- ============================================
--- まず、どんなレビューが要約対象になるか確認します
-
-SELECT
-    truck_brand_name,
-    review
-FROM harmonized.truck_reviews_v
-WHERE truck_brand_name = 'Kitakata Ramen Bar'  -- 1ブランドに絞って確認
-LIMIT 5;
-
--- ============================================
--- Step 2: 1ブランドのレビューを要約
--- ============================================
--- AI_SUMMARIZE_AGG()で複数レビューを1つのサマリーに凝縮します
-
-SELECT
-    truck_brand_name,
-    AI_SUMMARIZE_AGG(review) AS review_summary
-FROM harmonized.truck_reviews_v
-WHERE truck_brand_name = 'Kitakata Ramen Bar'
-GROUP BY truck_brand_name;
-
--- 💡 ポイント: 複数のレビューが1つの簡潔なサマリーになりました
-
--- ============================================
--- Step 3: 全ブランドの要約を生成（日本語訳付き）
--- ============================================
--- AI_TRANSLATEで日本語に翻訳も可能です
+-- AI_SUMMARIZE_AGG()で複数レビューを1つのサマリーに凝縮し、日本語に翻訳します
 
 SELECT
   truck_brand_name,
