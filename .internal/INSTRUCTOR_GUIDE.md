@@ -206,7 +206,7 @@
 
 ## Module 02: データパイプライン
 
-### 📁 ファイル: `02_data_pipelines/01_data_pipelines.sql`
+### 📁 ファイル: `02_data_pipelines/02_data_pipelines.sql`
 
 ### セクション1: 外部ステージ（行26-69）
 
@@ -271,7 +271,7 @@
 
 ## Module 03: Cortex AI
 
-### 📁 ファイル: `03_cortex_ai/01_cortex_ai.sql`
+### 📁 ファイル: `03_cortex_ai/03_cortex_ai.sql`
 
 ### セクション1: SENTIMENT（行26-68）
 
@@ -320,7 +320,7 @@
 
 ## Module 04: ガバナンス
 
-### 📁 ファイル: `04_governance/01_governance.sql`
+### 📁 ファイル: `04_governance/04_governance.sql`
 
 ### セクション1: RBAC（行25-117）
 
@@ -407,7 +407,7 @@
 
 ## Module 05: アプリとコラボレーション
 
-### 📁 ファイル: `05_apps_collaboration/01_apps_collaboration.sql`
+### 📁 ファイル: `05_apps_collaboration/05_apps_collaboration.sql`
 
 ### セクション1: Marketplace（行22-53）
 
