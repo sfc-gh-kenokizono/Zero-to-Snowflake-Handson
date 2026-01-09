@@ -8,8 +8,8 @@
 
 | ファイル | 説明 | 使い方 |
 |---------|------|--------|
-| [`apps_collaboration.sql`](./apps_collaboration.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
-| [`reset.sql`](./reset.sql) | リセット用 | やり直したい時に実行 |
+| [`01_apps_collaboration.sql`](./01_apps_collaboration.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
+| [`02_reset.sql`](./02_reset.sql) | リセット用 | やり直したい時に実行 |
 
 ---
 
@@ -56,7 +56,7 @@
 ### SQLファイルを準備
 
 1. **Snowsight** にログイン
-2. GitHubで [`apps_collaboration.sql`](./apps_collaboration.sql) を開き、**Raw** → 全文コピー
+2. GitHubで [`01_apps_collaboration.sql`](./01_apps_collaboration.sql) を開き、**Raw** → 全文コピー
 3. **Projects** → **Worksheets** → **+** で新規ワークシートを作成
 4. コピーした内容をペースト
 
@@ -68,7 +68,7 @@
 - **Warehouse**: `TB_DE_WH`
 
 ```sql
--- apps_collaboration.sql: 18-20行目
+-- 01_apps_collaboration.sql: 18-20行目
 USE DATABASE tb_101;
 USE ROLE accountadmin;
 USE WAREHOUSE tb_de_wh;
@@ -78,7 +78,7 @@ USE WAREHOUSE tb_de_wh;
 
 ## Step 1: Marketplaceから天気データを取得
 
-📍 **SQLファイル**: [`apps_collaboration.sql`](./apps_collaboration.sql) の **22〜53行目**
+📍 **SQLファイル**: [`01_apps_collaboration.sql`](./01_apps_collaboration.sql) の **22〜53行目**
 
 ### 1-1. Marketplaceにアクセス
 
@@ -109,7 +109,7 @@ ZTS_WEATHERSOURCE
 
 ## Step 2: 天気データとの統合分析
 
-📍 **SQLファイル**: [`apps_collaboration.sql`](./apps_collaboration.sql) の **55〜166行目**
+📍 **SQLファイル**: [`01_apps_collaboration.sql`](./01_apps_collaboration.sql) の **55〜166行目**
 
 ### 2-1. 天気データを確認
 
@@ -216,7 +216,7 @@ ORDER BY date ASC;
 
 ## Step 3: Safegraph POIデータの取得
 
-📍 **SQLファイル**: [`apps_collaboration.sql`](./apps_collaboration.sql) の **168〜265行目**
+📍 **SQLファイル**: [`01_apps_collaboration.sql`](./01_apps_collaboration.sql) の **168〜265行目**
 
 ### 3-1. Marketplaceからデータを取得
 
@@ -349,7 +349,7 @@ graph LR
 
 ## 🔄 リセット
 
-やり直したい場合は [`reset.sql`](./reset.sql) を実行してください。
+やり直したい場合は [`02_reset.sql`](./02_reset.sql) を実行してください。
 
 ---
 

@@ -8,8 +8,8 @@
 
 | ファイル | 説明 | 使い方 |
 |---------|------|--------|
-| [`getting_started.sql`](./getting_started.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
-| [`reset.sql`](./reset.sql) | リセット用 | やり直したい時に実行 |
+| [`01_getting_started.sql`](./01_getting_started.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
+| [`02_reset.sql`](./02_reset.sql) | リセット用 | やり直したい時に実行 |
 
 ---
 
@@ -40,7 +40,7 @@
 ### SQLファイルを準備
 
 1. **Snowsight** にログイン
-2. GitHubで [`getting_started.sql`](./getting_started.sql) を開き、**Raw** → 全文コピー
+2. GitHubで [`01_getting_started.sql`](./01_getting_started.sql) を開き、**Raw** → 全文コピー
 3. **Projects** → **Worksheets** → **+** で新規ワークシートを作成
 4. コピーした内容をペースト
 
@@ -51,7 +51,7 @@
 - **Database**: `TB_101`
 
 ```sql
--- getting_started.sql: 23-24行目
+-- 01_getting_started.sql: 23-24行目
 USE DATABASE tb_101;
 USE ROLE accountadmin;
 ```
@@ -62,7 +62,7 @@ USE ROLE accountadmin;
 
 ## Step 1: ウェアハウスの作成と操作
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **61〜137行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **61〜137行目**
 
 ### 1-1. 既存のウェアハウスを確認
 
@@ -138,7 +138,7 @@ ORDER BY total_sales DESC;
 
 ## Step 2: クエリ結果キャッシュの体験
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **152〜179行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **152〜179行目**
 
 ### 2-1. 同じクエリをもう一度実行
 
@@ -167,7 +167,7 @@ ALTER WAREHOUSE my_wh SET warehouse_size = 'XSmall';
 
 ## Step 3: ゼロコピークローン
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **181〜298行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **181〜298行目**
 
 ### 3-1. テーブルをクローン
 
@@ -236,7 +236,7 @@ ALTER TABLE raw_pos.truck_details DROP COLUMN truck_build;
 
 ## Step 4: UNDROPでデータ復旧
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **299〜325行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **299〜325行目**
 
 ### 4-1. 誤ってテーブルを削除（ドキドキ）
 
@@ -276,7 +276,7 @@ DROP TABLE raw_pos.truck_dev;
 
 ## Step 5: リソースモニター
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **327〜370行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **327〜370行目**
 
 ### 5-1. リソースモニターを作成
 
@@ -310,7 +310,7 @@ ALTER WAREHOUSE my_wh SET RESOURCE_MONITOR = my_resource_monitor;
 
 ## Step 6: 予算の設定
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **372〜432行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **372〜432行目**
 
 ### 6-1. 予算を作成
 
@@ -335,7 +335,7 @@ CREATE OR REPLACE SNOWFLAKE.CORE.BUDGET my_budget()
 
 ## Step 7: ユニバーサル検索
 
-📍 **SQLファイル**: [`getting_started.sql`](./getting_started.sql) の **434〜460行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **434〜460行目**
 
 ### 7-1. 検索を体験
 
@@ -364,7 +364,7 @@ SELECT '🎉 Module 01 完了！次は Module 02: データパイプラインに
 
 ## 🔄 リセット
 
-やり直したい場合は [`reset.sql`](./reset.sql) を実行：
+やり直したい場合は [`02_reset.sql`](./02_reset.sql) を実行：
 
 ```sql
 -- このモジュールで作成したオブジェクトを削除

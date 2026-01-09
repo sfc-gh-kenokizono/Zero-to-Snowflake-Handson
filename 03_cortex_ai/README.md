@@ -8,8 +8,8 @@
 
 | ファイル | 説明 | 使い方 |
 |---------|------|--------|
-| [`cortex_ai.sql`](./cortex_ai.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
-| [`reset.sql`](./reset.sql) | リセット用 | やり直したい時に実行 |
+| [`01_cortex_ai.sql`](./01_cortex_ai.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
+| [`02_reset.sql`](./02_reset.sql) | リセット用 | やり直したい時に実行 |
 
 ---
 
@@ -48,7 +48,7 @@
 ### SQLファイルを準備
 
 1. **Snowsight** にログイン
-2. GitHubで [`cortex_ai.sql`](./cortex_ai.sql) を開き、**Raw** → 全文コピー
+2. GitHubで [`01_cortex_ai.sql`](./01_cortex_ai.sql) を開き、**Raw** → 全文コピー
 3. **Projects** → **Worksheets** → **+** で新規ワークシートを作成
 4. コピーした内容をペースト
 
@@ -60,7 +60,7 @@
 - **Warehouse**: `TB_ANALYST_WH`
 
 ```sql
--- cortex_ai.sql: 22-24行目
+-- 01_cortex_ai.sql: 22-24行目
 USE ROLE tb_analyst;
 USE DATABASE tb_101;
 USE WAREHOUSE tb_analyst_wh;
@@ -72,7 +72,7 @@ USE WAREHOUSE tb_analyst_wh;
 
 ## Step 1: SENTIMENT() - センチメント分析
 
-📍 **SQLファイル**: [`cortex_ai.sql`](./cortex_ai.sql) の **26〜68行目**
+📍 **SQLファイル**: [`01_cortex_ai.sql`](./01_cortex_ai.sql) の **26〜68行目**
 
 ### ビジネス上の質問
 
@@ -113,7 +113,7 @@ ORDER BY total_reviews DESC;
 
 ## Step 2: AI_CLASSIFY() - 自動分類
 
-📍 **SQLファイル**: [`cortex_ai.sql`](./cortex_ai.sql) の **70〜118行目**
+📍 **SQLファイル**: [`01_cortex_ai.sql`](./01_cortex_ai.sql) の **70〜118行目**
 
 ### ビジネス上の質問
 
@@ -158,7 +158,7 @@ ORDER BY truck_brand_name, number_of_reviews DESC;
 
 ## Step 3: EXTRACT_ANSWER() - 回答抽出
 
-📍 **SQLファイル**: [`cortex_ai.sql`](./cortex_ai.sql) の **120〜158行目**
+📍 **SQLファイル**: [`01_cortex_ai.sql`](./01_cortex_ai.sql) の **120〜158行目**
 
 ### ビジネス上の質問
 
@@ -195,7 +195,7 @@ LIMIT 10000;
 
 ## Step 4: AI_SUMMARIZE_AGG() - 要約生成
 
-📍 **SQLファイル**: [`cortex_ai.sql`](./cortex_ai.sql) の **159〜195行目**
+📍 **SQLファイル**: [`01_cortex_ai.sql`](./01_cortex_ai.sql) の **159〜195行目**
 
 ### ビジネス上の質問
 
@@ -266,7 +266,7 @@ SELECT '🎉 Module 03 完了！次は Module 04: ガバナンスに進みまし
 
 ## 🔄 リセット
 
-やり直したい場合は [`reset.sql`](./reset.sql) を実行してください。
+やり直したい場合は [`02_reset.sql`](./02_reset.sql) を実行してください。
 
 ---
 

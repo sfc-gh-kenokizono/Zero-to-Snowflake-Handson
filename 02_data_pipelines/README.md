@@ -8,8 +8,8 @@
 
 | ファイル | 説明 | 使い方 |
 |---------|------|--------|
-| [`data_pipelines.sql`](./data_pipelines.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
-| [`reset.sql`](./reset.sql) | リセット用 | やり直したい時に実行 |
+| [`01_data_pipelines.sql`](./01_data_pipelines.sql) | **メインスクリプト** | Snowsightで開いて順番に実行 |
+| [`02_reset.sql`](./02_reset.sql) | リセット用 | やり直したい時に実行 |
 
 ---
 
@@ -51,7 +51,7 @@ graph LR
 ### SQLファイルを準備
 
 1. **Snowsight** にログイン
-2. GitHubで [`data_pipelines.sql`](./data_pipelines.sql) を開き、**Raw** → 全文コピー
+2. GitHubで [`01_data_pipelines.sql`](./01_data_pipelines.sql) を開き、**Raw** → 全文コピー
 3. **Projects** → **Worksheets** → **+** で新規ワークシートを作成
 4. コピーした内容をペースト
 
@@ -63,7 +63,7 @@ graph LR
 - **Warehouse**: `TB_DE_WH`
 
 ```sql
--- data_pipelines.sql: 22-24行目
+-- 01_data_pipelines.sql: 22-24行目
 USE DATABASE tb_101;
 USE ROLE tb_data_engineer;
 USE WAREHOUSE tb_de_wh;
@@ -75,7 +75,7 @@ USE WAREHOUSE tb_de_wh;
 
 ## Step 1: 外部ステージからのデータ取り込み
 
-📍 **SQLファイル**: [`data_pipelines.sql`](./data_pipelines.sql) の **26〜69行目**
+📍 **SQLファイル**: [`01_data_pipelines.sql`](./01_data_pipelines.sql) の **26〜69行目**
 
 ### 1-1. ステージとは？
 
@@ -129,7 +129,7 @@ SELECT * FROM raw_pos.menu_staging;
 
 ## Step 2: 半構造化データの操作
 
-📍 **SQLファイル**: [`data_pipelines.sql`](./data_pipelines.sql) の **71〜124行目**
+📍 **SQLファイル**: [`01_data_pipelines.sql`](./01_data_pipelines.sql) の **71〜124行目**
 
 ### 2-1. VARIANTデータを確認
 
@@ -187,7 +187,7 @@ FROM
 
 ## Step 3: Dynamic Tablesの作成
 
-📍 **SQLファイル**: [`data_pipelines.sql`](./data_pipelines.sql) の **126〜215行目**
+📍 **SQLファイル**: [`01_data_pipelines.sql`](./01_data_pipelines.sql) の **126〜215行目**
 
 ### Dynamic Tableとは？
 
@@ -253,7 +253,7 @@ WHERE ingredient_name IN ('French Baguette', 'Pickled Daikon');
 
 ## Step 4: パイプラインの構築
 
-📍 **SQLファイル**: [`data_pipelines.sql`](./data_pipelines.sql) の **217〜332行目**
+📍 **SQLファイル**: [`01_data_pipelines.sql`](./01_data_pipelines.sql) の **217〜332行目**
 
 ### 4-1. 成分→メニュー ルックアップを作成
 
@@ -327,7 +327,7 @@ ORDER BY total_ingredients_used DESC;
 
 ## Step 5: DAGによる可視化
 
-📍 **SQLファイル**: [`data_pipelines.sql`](./data_pipelines.sql) の **334〜350行目**
+📍 **SQLファイル**: [`01_data_pipelines.sql`](./01_data_pipelines.sql) の **334〜350行目**
 
 ### 5-1. DAGにアクセス
 
@@ -361,7 +361,7 @@ SELECT '🎉 Module 02 完了！次は Module 03: Cortex AI に進みましょ�
 
 ## 🔄 リセット
 
-やり直したい場合は [`reset.sql`](./reset.sql) を実行してください。
+やり直したい場合は [`02_reset.sql`](./02_reset.sql) を実行してください。
 
 ---
 
