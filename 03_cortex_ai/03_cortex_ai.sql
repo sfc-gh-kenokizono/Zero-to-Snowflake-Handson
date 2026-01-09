@@ -117,7 +117,7 @@ ORDER BY total_reviews DESC;
 -- ============================================
 -- Step 1: AI_CLASSIFY関数の動作を確認
 -- ============================================
--- まず20件のレビューで、どのようにカテゴリ分類されるか見てみます
+-- まず100件のレビューで、どのようにカテゴリ分類されるか見てみます
 
 SELECT
     truck_brand_name,
@@ -130,7 +130,7 @@ FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
   AND LENGTH(review) > 30
-LIMIT 20;
+LIMIT 100;
 
 -- 💡 ポイント: classification_result の中に labels と probabilities が返されます
 --    :labels[0] で最も可能性の高いカテゴリを取得できます
