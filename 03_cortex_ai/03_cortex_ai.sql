@@ -129,7 +129,7 @@ FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
   AND LENGTH(review) > 30
-LIMIT 10;
+LIMIT 50;
 
 -- 💡 ポイント: AIがレビュー内容を理解し、最も適切な1つのカテゴリに分類します
 
