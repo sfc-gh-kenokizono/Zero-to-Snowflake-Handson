@@ -119,7 +119,7 @@ ORDER BY total_reviews DESC;
 
 > 「顧客は主に何についてコメントしているか？」
 
-### 2-1. 具体的なカテゴリでラベル分類
+### 2-1. シングルラベル分類
 
 ```sql
 SELECT
@@ -131,10 +131,10 @@ SELECT
     ):labels[0]::STRING AS category
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' AND review IS NOT NULL
-LIMIT 50;
+LIMIT 30;
 ```
 
-### 2-2. カテゴリを変えて試す
+### 2-2. マルチラベル分類
 
 ```sql
 SELECT
@@ -142,11 +142,12 @@ SELECT
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money']
-    ):labels[0]::STRING AS category
+        ['Food Quality', 'Wait Time', 'Price', 'Portion Size'],
+        {'output_mode': 'multi'}
+    ):labels AS categories
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' AND review IS NOT NULL
-LIMIT 50;
+LIMIT 30;
 ```
 
 ### AI_CLASSIFY() の仕組み
@@ -155,9 +156,10 @@ LIMIT 50;
 |---|------|
 | **入力（レビュー）** | "The tacos were amazing but I waited 20 minutes" |
 | **入力（カテゴリ）** | `['Food Quality', 'Wait Time', 'Price']` |
-| **出力** | `'Food Quality'`（最も該当するカテゴリ） |
+| **出力（シングル）** | `'Food Quality'` |
+| **出力（マルチ）** | `['Food Quality', 'Wait Time']` |
 
-> 💡 **ポイント**: カテゴリの定義次第で、同じレビューでも異なる視点から分類できます
+> 💡 **ポイント**: `output_mode: 'multi'` で複数カテゴリを同時に割り当て可能
 
 ---
 

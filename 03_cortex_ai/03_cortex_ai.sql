@@ -114,9 +114,9 @@ ORDER BY total_reviews DESC;
 -- ビジネス上の質問: 「顧客は主に何についてコメントしているか？」
 
 -- ============================================
--- Step 1: 具体的なカテゴリでラベル分類
+-- Step 1: シングルラベル分類
 -- ============================================
--- レビューを具体的なカテゴリに分類します
+-- レビューを最も該当するカテゴリに分類します
 
 SELECT
     truck_brand_name,
@@ -129,31 +129,31 @@ FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
   AND LENGTH(review) > 30
-LIMIT 50;
+LIMIT 30;
 
--- 💡 ポイント: 
---    - AIがレビュー内容を理解し、最も適切なカテゴリに分類します
---    - 具体的なカテゴリを指定すると、より多様な分類結果が得られます
+-- 💡 ポイント: AIがレビュー内容を理解し、最も適切な1つのカテゴリに分類します
 
 -- ============================================
--- Step 2: カテゴリを変えて試してみる
+-- Step 2: マルチラベル分類
 -- ============================================
--- 別のカテゴリセットで分類してみましょう
+-- 1つのレビューに複数のカテゴリを割り当てます
 
 SELECT
     truck_brand_name,
     LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money']
-    ):labels[0]::STRING AS category
+        ['Food Quality', 'Wait Time', 'Price', 'Portion Size'],
+        {'output_mode': 'multi'}  -- マルチラベルを有効化
+    ):labels AS categories
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
-  AND LENGTH(review) > 30
-LIMIT 50;
+  AND LENGTH(review) > 50
+LIMIT 30;
 
--- 💡 ポイント: カテゴリの定義次第で、同じレビューでも異なる視点から分類できます
+-- 💡 ポイント: output_mode: 'multi' を指定すると、該当する複数のカテゴリが返されます
+--    例: ["Food Quality", "Wait Time"] のように複数のラベルがつきます
 
 /*===================================================================================
   3. 特定の運用インサイトの抽出
