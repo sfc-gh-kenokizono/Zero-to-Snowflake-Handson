@@ -165,7 +165,7 @@ LIMIT 30;
 
 ## Step 3: EXTRACT_ANSWER() - 回答抽出
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **158〜219行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **158〜229行目**
 
 ### ビジネス上の質問
 
@@ -202,7 +202,7 @@ LIMIT 20;
 
 ## Step 4: AI_SUMMARIZE_AGG() - 要約生成
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **221〜295行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **231〜305行目**
 
 ### ビジネス上の質問
 

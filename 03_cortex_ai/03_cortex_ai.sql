@@ -167,22 +167,32 @@ LIMIT 30;
 -- ============================================
 -- Step 1: EXTRACT_ANSWER関数の動作を確認
 -- ============================================
--- まず3件のレビューで、どのように回答が抽出されるか見てみます
+-- 信頼度(score)が高い回答を5件表示します
 
-SELECT
+SELECT 
     truck_brand_name,
-    review,
-    SNOWFLAKE.CORTEX.EXTRACT_ANSWER(
+    LEFT(review, 100) || '...' AS review_preview,
+    extracted_answer[0]:answer::STRING AS answer,
+    ROUND(extracted_answer[0]:score::FLOAT, 3) AS score
+FROM (
+    SELECT
+        truck_brand_name,
         review,
-        'What specific improvement or complaint is mentioned in this review?'
-    ) AS extracted_answer
-FROM harmonized.truck_reviews_v
-WHERE language = 'en'
-  AND review IS NOT NULL
-  AND LENGTH(review) > 50
-LIMIT 3;
+        SNOWFLAKE.CORTEX.EXTRACT_ANSWER(
+            review,
+            'What specific improvement or complaint is mentioned in this review?'
+        ) AS extracted_answer
+    FROM harmonized.truck_reviews_v
+    WHERE language = 'en'
+      AND review IS NOT NULL
+      AND LENGTH(review) > 50
+    LIMIT 100
+)
+WHERE extracted_answer[0]:score::FLOAT > 0.5
+ORDER BY score DESC
+LIMIT 5;
 
--- 💡 ポイント: answer キーに抽出された回答が、score キーに信頼度が返されます
+-- 💡 ポイント: score が高いほど、抽出された回答の信頼度が高いことを示します
 
 -- ============================================
 -- Step 2: 複数のレビューから具体的なフィードバックを抽出
