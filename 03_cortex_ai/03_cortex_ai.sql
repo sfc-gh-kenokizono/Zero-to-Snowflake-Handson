@@ -107,92 +107,53 @@ ORDER BY total_reviews DESC;
 /*===================================================================================
   2. 顧客フィードバックの分類
   ===================================================================================
-   すべてのレビューを分類して、顧客がサービスのどの側面について最も話しているかを
-   理解しましょう。AI_CLASSIFY()関数は、単純なキーワードマッチングではなく、
-   AIの理解に基づいて、レビューをユーザー定義のカテゴリに自動的に分類します。
+   AI_CLASSIFY()関数は、テキストを指定したカテゴリに自動分類します。
+   キーワードマッチングではなく、AIが意味を理解して分類するのがポイントです。
 -----------------------------------------------------------------------------------*/
 
 -- ビジネス上の質問: 「顧客は主に何についてコメントしているか？」
 
 -- ============================================
--- Step 1: AI_CLASSIFY関数の動作を確認
+-- Step 1: シンプルなラベル分類
 -- ============================================
--- まず100件のレビューで、どのようにカテゴリ分類されるか見てみます
+-- レビューを指定したカテゴリに分類します
 
 SELECT
     truck_brand_name,
-    LEFT(review, 60) || '...' AS review_preview,
+    LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Pricing', 'Service Experience', 'Staff Behavior']
-    ) AS classification_result
+        ['Food Quality', 'Service Experience']
+    ):labels[0]::STRING AS category
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
   AND LENGTH(review) > 30
-LIMIT 100;
+LIMIT 20;
 
--- 💡 ポイント: classification_result の中に labels が返されます
---    :labels[0] で最も可能性の高いカテゴリを取得できます
+-- 💡 ポイント: AIがレビュー内容を理解し、適切なカテゴリに分類します
 
 -- ============================================
--- Step 2: 最も可能性の高いカテゴリだけを抽出
+-- Step 2: マルチラベル分類
 -- ============================================
+-- 1つのレビューに複数のカテゴリを割り当てることも可能です
 
 SELECT
     truck_brand_name,
-    LEFT(review, 60) || '...' AS review_preview,
+    LEFT(review, 80) || '...' AS review_preview,
     AI_CLASSIFY(
         review,
-        ['Food Quality', 'Pricing', 'Service Experience', 'Staff Behavior']
-    ):labels[0]::STRING AS feedback_category
+        ['Food Quality', 'Service Experience', 'Price', 'Wait Time'],
+        {'multi_label': TRUE}  -- マルチラベルを有効化
+    ):labels AS categories
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
-  AND LENGTH(review) > 30
-LIMIT 10;
+  AND LENGTH(review) > 50
+LIMIT 20;
 
--- ============================================
--- Step 3: ブランド別・カテゴリ別に集計
--- ============================================
--- 1,000件のレビューを分類し、どのカテゴリの話題が多いかを分析します
-
-WITH classified_reviews AS (
-  SELECT
-    truck_brand_name,
-    AI_CLASSIFY(
-      review,
-      ['Food Quality', 'Pricing', 'Service Experience', 'Staff Behavior']
-    ):labels[0] AS feedback_category
-  FROM
-    harmonized.truck_reviews_v
-  WHERE
-    language ILIKE '%en%'
-    AND review IS NOT NULL
-    AND LENGTH(review) > 30
-  LIMIT
-    1000
-)
-SELECT
-  truck_brand_name,
-  feedback_category,
-  COUNT(*) AS number_of_reviews
-FROM
-  classified_reviews
-GROUP BY
-  truck_brand_name,
-  feedback_category
-ORDER BY
-  truck_brand_name,
-  number_of_reviews DESC;
-                
-/*
-    重要なインサイト:
-        AI_CLASSIFY()が、数千のレビューを食品の品質、サービス体験などのビジネスに関連する
-        テーマに自動的に分類した様子を観察してください。食品の品質がトラックブランド全体で
-        最も議論されているトピックであることがすぐにわかり、運用チームに顧客の優先事項に関する
-        明確で実用的なインサイトを提供します。
-*/
+-- 💡 ポイント: multi_label: TRUE を指定すると、該当する複数のカテゴリが返されます
+--    例: ["Food Quality", "Wait Time"] のように複数のラベルがつく場合があります
 
 /*===================================================================================
   3. 特定の運用インサイトの抽出

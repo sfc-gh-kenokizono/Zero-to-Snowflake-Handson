@@ -113,52 +113,59 @@ ORDER BY total_reviews DESC;
 
 ## Step 2: AI_CLASSIFY() - 自動分類
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **107〜195行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **107〜156行目**
 
 ### ビジネス上の質問
 
-> 「顧客は主に何についてコメントしているか？食品の品質？サービス？」
+> 「顧客は主に何についてコメントしているか？」
 
-### 2-1. カテゴリを定義して分類
+### 2-1. シンプルなラベル分類
 
 ```sql
-WITH classified_reviews AS (
-  SELECT
-    truck_brand_name,
-    AI_CLASSIFY(
-      review,
-      ['Food Quality', 'Pricing', 'Service Experience', 'Staff Behavior']
-    ):labels[0] AS feedback_category
-  FROM harmonized.truck_reviews_v
-  WHERE language ILIKE '%en%' AND review IS NOT NULL AND LENGTH(review) > 30
-  LIMIT 1000
-)
 SELECT
-  truck_brand_name,
-  feedback_category,
-  COUNT(*) AS number_of_reviews
-FROM classified_reviews
-GROUP BY truck_brand_name, feedback_category
-ORDER BY truck_brand_name, number_of_reviews DESC;
+    truck_brand_name,
+    LEFT(review, 80) || '...' AS review_preview,
+    AI_CLASSIFY(
+        review,
+        ['Food Quality', 'Service Experience']
+    ):labels[0]::STRING AS category
+FROM harmonized.truck_reviews_v
+WHERE language = 'en' AND review IS NOT NULL
+LIMIT 20;
+```
+
+### 2-2. マルチラベル分類
+
+```sql
+SELECT
+    truck_brand_name,
+    LEFT(review, 80) || '...' AS review_preview,
+    AI_CLASSIFY(
+        review,
+        ['Food Quality', 'Service Experience', 'Price', 'Wait Time'],
+        {'multi_label': TRUE}
+    ):labels AS categories
+FROM harmonized.truck_reviews_v
+WHERE language = 'en' AND review IS NOT NULL
+LIMIT 20;
 ```
 
 ### AI_CLASSIFY() の仕組み
 
 | | 内容 |
 |---|------|
-| **入力（レビュー）** | "The tacos were amazing and fresh!" |
-| **入力（カテゴリ）** | `['Food Quality', 'Service', 'Pricing']` |
-| **出力** | `'Food Quality'` |
+| **入力（レビュー）** | "The tacos were amazing but I waited 20 minutes" |
+| **入力（カテゴリ）** | `['Food Quality', 'Wait Time']` |
+| **出力（シングル）** | `'Food Quality'` |
+| **出力（マルチ）** | `['Food Quality', 'Wait Time']` |
 
-※ キーワードマッチではなく、AIが意味を理解して分類
-
-> 💡 **ポイント**: 単純なキーワード検索ではなく、**AIが意味を理解**
+> 💡 **ポイント**: `multi_label: TRUE` で複数カテゴリを同時に割り当て可能
 
 ---
 
 ## Step 3: EXTRACT_ANSWER() - 回答抽出
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **197〜258行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **158〜219行目**
 
 ### ビジネス上の質問
 
@@ -195,7 +202,7 @@ LIMIT 20;
 
 ## Step 4: AI_SUMMARIZE_AGG() - 要約生成
 
-📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **260〜330行目**
+📍 **SQLファイル**: [`03_cortex_ai.sql`](./03_cortex_ai.sql) の **221〜295行目**
 
 ### ビジネス上の質問
 
