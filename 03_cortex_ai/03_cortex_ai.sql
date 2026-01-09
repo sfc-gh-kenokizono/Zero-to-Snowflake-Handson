@@ -52,7 +52,7 @@ WHERE language = 'en'
 LIMIT 10;
 
 -- ============================================
--- Step 2: 10件のレビューにSENTIMENT関数を適用
+-- Step 2: レビューにSENTIMENT関数を適用（日本語訳付き）
 -- ============================================
 -- SENTIMENT()関数がどのようにスコアを返すか確認します
 -- スコアは -1（ネガティブ）〜 +1（ポジティブ）の範囲です
@@ -60,13 +60,14 @@ LIMIT 10;
 SELECT 
     truck_brand_name,
     LEFT(review, 80) || '...' AS review_preview,
-    SNOWFLAKE.CORTEX.SENTIMENT(review) AS sentiment_score
+    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 80), 'en', 'ja') AS review_ja,
+    ROUND(SNOWFLAKE.CORTEX.SENTIMENT(review), 2) AS sentiment_score
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
 LIMIT 10;
 
--- 💡 ポイント: スコアを見て、ポジティブ/ネガティブな内容と一致しているか確認してください
+-- 💡 ポイント: 日本語訳とスコアを見比べて、ポジティブ/ネガティブが一致しているか確認してください
 
 -- ============================================
 -- Step 3: ブランド別にセンチメントを集計
@@ -114,13 +115,13 @@ ORDER BY total_reviews DESC;
 -- ビジネス上の質問: 「顧客は主に何についてコメントしているか？」
 
 -- ============================================
--- Step 1: シングルラベル分類
+-- Step 1: シングルラベル分類（日本語訳付き）
 -- ============================================
 -- レビューを最も該当するカテゴリに分類します
 
 SELECT
     truck_brand_name,
-    LEFT(review, 80) || '...' AS review_preview,
+    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 80), 'en', 'ja') AS review_ja,
     AI_CLASSIFY(
         review,
         ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time']
@@ -129,18 +130,18 @@ FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
   AND LENGTH(review) > 30
-LIMIT 30;
+LIMIT 10;
 
 -- 💡 ポイント: AIがレビュー内容を理解し、最も適切な1つのカテゴリに分類します
 
 -- ============================================
--- Step 2: マルチラベル分類
+-- Step 2: マルチラベル分類（日本語訳付き）
 -- ============================================
 -- 1つのレビューに複数のカテゴリを割り当てます
 
 SELECT
     truck_brand_name,
-    LEFT(review, 80) || '...' AS review_preview,
+    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 80), 'en', 'ja') AS review_ja,
     AI_CLASSIFY(
         review,
         ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time'],
@@ -150,7 +151,7 @@ FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
   AND review IS NOT NULL
   AND LENGTH(review) > 50
-LIMIT 30;
+LIMIT 10;
 
 -- 💡 ポイント: output_mode: 'multi' を指定すると、該当する複数のカテゴリが返されます
 --    例: ["Taste", "Wait Time"] のように複数のラベルがつきます
@@ -165,15 +166,16 @@ LIMIT 30;
 -- ビジネス上の質問: 「各顧客レビュー内で見つかる具体的な苦情や賞賛は何か？」
 
 -- ============================================
--- Step 1: レビューから具体的なフィードバックを抽出
+-- Step 1: レビューから具体的なフィードバックを抽出（日本語訳付き）
 -- ============================================
--- 信頼度(score)が高い回答を20件表示します
+-- 信頼度(score)が高い回答を10件表示します
 
 SELECT 
     truck_brand_name,
-    LEFT(review, 100) || '...' AS review_preview,
+    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 80), 'en', 'ja') AS review_ja,
     extracted_answer[0]:answer::STRING AS answer,
-    ROUND(extracted_answer[0]:score::FLOAT, 3) AS score
+    SNOWFLAKE.CORTEX.TRANSLATE(extracted_answer[0]:answer::STRING, 'en', 'ja') AS answer_ja,
+    ROUND(extracted_answer[0]:score::FLOAT, 2) AS score
 FROM (
     SELECT
         truck_brand_name,
@@ -186,14 +188,14 @@ FROM (
     WHERE language = 'en'
       AND review IS NOT NULL
       AND LENGTH(review) > 50
-    LIMIT 200
+    LIMIT 100
 )
 WHERE extracted_answer[0]:score::FLOAT > 0.3
 ORDER BY score DESC
-LIMIT 20;
+LIMIT 10;
 
 -- 💡 ポイント: 
---    - answer: 抽出された具体的なフィードバック
+--    - answer_ja: 抽出されたフィードバックの日本語訳
 --    - score: 信頼度（高いほど正確な抽出）
 
 /*
