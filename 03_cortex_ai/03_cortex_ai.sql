@@ -59,7 +59,7 @@ LIMIT 10;
 
 SELECT 
     truck_brand_name,
-    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 400), 'en', 'ja') AS review_ja,
+    SNOWFLAKE.CORTEX.TRANSLATE(review, 'en', 'ja') AS review_ja,
     ROUND(SNOWFLAKE.CORTEX.SENTIMENT(review), 2) AS sentiment_score
 FROM harmonized.truck_reviews_v
 WHERE language = 'en' 
@@ -120,7 +120,7 @@ ORDER BY total_reviews DESC;
 
 SELECT
     truck_brand_name,
-    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 400), 'en', 'ja') AS review_ja,
+    SNOWFLAKE.CORTEX.TRANSLATE(review, 'en', 'ja') AS review_ja,
     AI_CLASSIFY(
         review,
         ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time']
@@ -140,7 +140,7 @@ LIMIT 50;
 
 SELECT
     truck_brand_name,
-    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 400), 'en', 'ja') AS review_ja,
+    SNOWFLAKE.CORTEX.TRANSLATE(review, 'en', 'ja') AS review_ja,
     AI_CLASSIFY(
         review,
         ['Taste', 'Freshness', 'Staff Friendliness', 'Value for Money', 'Wait Time'],
@@ -171,7 +171,7 @@ LIMIT 10;
 
 SELECT 
     truck_brand_name,
-    SNOWFLAKE.CORTEX.TRANSLATE(LEFT(review, 400), 'en', 'ja') AS review_ja,
+    SNOWFLAKE.CORTEX.TRANSLATE(review, 'en', 'ja') AS review_ja,
     extracted_answer[0]:answer::STRING AS answer,
     SNOWFLAKE.CORTEX.TRANSLATE(extracted_answer[0]:answer::STRING, 'en', 'ja') AS answer_ja,
     ROUND(extracted_answer[0]:score::FLOAT, 2) AS score
