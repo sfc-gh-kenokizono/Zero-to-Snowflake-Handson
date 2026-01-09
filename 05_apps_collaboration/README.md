@@ -78,7 +78,7 @@ USE WAREHOUSE tb_de_wh;
 
 ## Step 1: Marketplaceから天気データを取得
 
-📍 **SQLファイル**: [`05_apps_collaboration.sql`](./05_apps_collaboration.sql) の **22〜53行目**
+📍 **SQLファイル**: [`05_apps_collaboration.sql`](./05_apps_collaboration.sql) の **23〜58行目**
 
 ### 1-1. Marketplaceにアクセス
 
@@ -109,7 +109,7 @@ ZTS_WEATHERSOURCE
 
 ## Step 2: 天気データとの統合分析
 
-📍 **SQLファイル**: [`05_apps_collaboration.sql`](./05_apps_collaboration.sql) の **55〜166行目**
+📍 **SQLファイル**: [`05_apps_collaboration.sql`](./05_apps_collaboration.sql) の **59〜168行目**
 
 ### 2-1. 天気データを確認
 
@@ -216,7 +216,7 @@ ORDER BY date ASC;
 
 ## Step 3: Safegraph POIデータの取得
 
-📍 **SQLファイル**: [`05_apps_collaboration.sql`](./05_apps_collaboration.sql) の **168〜265行目**
+📍 **SQLファイル**: [`05_apps_collaboration.sql`](./05_apps_collaboration.sql) の **169〜284行目**
 
 ### 3-1. Marketplaceからデータを取得
 

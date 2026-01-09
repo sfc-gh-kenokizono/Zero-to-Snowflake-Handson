@@ -75,7 +75,7 @@ USE WAREHOUSE tb_de_wh;
 
 ## Step 1: 外部ステージからのデータ取り込み
 
-📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **26〜69行目**
+📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **27〜71行目**
 
 ### 1-1. ステージとは？
 
@@ -129,7 +129,7 @@ SELECT * FROM raw_pos.menu_staging;
 
 ## Step 2: 半構造化データの操作
 
-📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **71〜124行目**
+📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **72〜126行目**
 
 ### 2-1. VARIANTデータを確認
 
@@ -187,7 +187,7 @@ FROM
 
 ## Step 3: Dynamic Tablesの作成
 
-📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **126〜215行目**
+📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **127〜217行目**
 
 ### Dynamic Tableとは？
 
@@ -253,7 +253,7 @@ WHERE ingredient_name IN ('French Baguette', 'Pickled Daikon');
 
 ## Step 4: パイプラインの構築
 
-📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **217〜332行目**
+📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **218〜334行目**
 
 ### 4-1. 成分→メニュー ルックアップを作成
 
@@ -327,7 +327,7 @@ ORDER BY total_ingredients_used DESC;
 
 ## Step 5: DAGによる可視化
 
-📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **334〜350行目**
+📍 **SQLファイル**: [`02_data_pipelines.sql`](./02_data_pipelines.sql) の **335〜355行目**
 
 ### 5-1. DAGにアクセス
 

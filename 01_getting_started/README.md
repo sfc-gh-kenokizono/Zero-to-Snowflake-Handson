@@ -62,7 +62,7 @@ USE ROLE accountadmin;
 
 ## Step 1: ウェアハウスの作成と操作
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **61〜137行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **27〜148行目**
 
 ### 1-1. 既存のウェアハウスを確認
 
@@ -138,7 +138,7 @@ ORDER BY total_sales DESC;
 
 ## Step 2: クエリ結果キャッシュの体験
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **152〜179行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **149〜177行目**
 
 ### 2-1. 同じクエリをもう一度実行
 
@@ -167,7 +167,7 @@ ALTER WAREHOUSE my_wh SET warehouse_size = 'XSmall';
 
 ## Step 3: ゼロコピークローン
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **181〜298行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **178〜297行目**
 
 ### 3-1. テーブルをクローン
 
@@ -236,7 +236,7 @@ ALTER TABLE raw_pos.truck_details DROP COLUMN truck_build;
 
 ## Step 4: UNDROPでデータ復旧
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **299〜325行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **298〜323行目**
 
 ### 4-1. 誤ってテーブルを削除（ドキドキ）
 
@@ -276,7 +276,7 @@ DROP TABLE raw_pos.truck_dev;
 
 ## Step 5: リソースモニター
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **327〜370行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **324〜368行目**
 
 ### 5-1. リソースモニターを作成
 
@@ -310,7 +310,7 @@ ALTER WAREHOUSE my_wh SET RESOURCE_MONITOR = my_resource_monitor;
 
 ## Step 6: 予算の設定
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **372〜432行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **369〜413行目**
 
 ### 6-1. 予算を作成
 
@@ -335,7 +335,7 @@ CREATE OR REPLACE SNOWFLAKE.CORE.BUDGET my_budget()
 
 ## Step 7: ユニバーサル検索
 
-📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **434〜460行目**
+📍 **SQLファイル**: [`01_getting_started.sql`](./01_getting_started.sql) の **414〜437行目**
 
 ### 7-1. 検索を体験
 

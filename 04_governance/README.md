@@ -81,7 +81,7 @@ USE WAREHOUSE tb_dev_wh;
 
 ## Step 1: ロールベースアクセス制御（RBAC）
 
-📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **25〜117行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **26〜118行目**
 
 ### RBACとは？
 
@@ -149,7 +149,7 @@ SELECT TOP 100 * FROM raw_customer.customer_loyalty;
 
 ## Step 2: 自動タグ付けによるPII検出
 
-📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **119〜203行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **119〜204行目**
 
 ### 自動タグ付けとは？
 
@@ -216,7 +216,7 @@ FROM TABLE(INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS('raw_customer.customer_
 
 ## Step 3: マスキングポリシー（列レベルセキュリティ）
 
-📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **205〜257行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **205〜258行目**
 
 ### マスキングポリシーとは？
 
@@ -275,7 +275,7 @@ SELECT TOP 100 * FROM raw_customer.customer_loyalty;
 
 ## Step 4: 行アクセスポリシー（行レベルセキュリティ）
 
-📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **259〜325行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **259〜326行目**
 
 ### 行アクセスポリシーとは？
 
@@ -331,7 +331,7 @@ SELECT TOP 100 * FROM raw_customer.customer_loyalty;
 
 ## Step 5: データメトリック関数（DMF）
 
-📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **327〜404行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **327〜405行目**
 
 ### DMFとは？
 
@@ -388,7 +388,7 @@ ALTER TABLE raw_pos.order_detail
 
 ## Step 6: トラストセンター
 
-📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **406〜482行目**
+📍 **SQLファイル**: [`04_governance.sql`](./04_governance.sql) の **406〜486行目**
 
 ### トラストセンターとは？
 
