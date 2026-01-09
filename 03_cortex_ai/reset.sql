@@ -15,8 +15,8 @@ USE DATABASE tb_101;
 -- クエリタグの設定を解除
 ALTER SESSION UNSET query_tag;
 
--- ウェアハウスを一時停止
-ALTER WAREHOUSE tb_analyst_wh SUSPEND;
+-- ウェアハウスを一時停止（コメントアウト: AUTO_SUSPEND=60で自動停止するためエラー回避）
+-- ALTER WAREHOUSE tb_analyst_wh SUSPEND;
 
 -- リセット完了メッセージ
 SELECT '✅ Module 03 のリセットが完了しました。' AS message;

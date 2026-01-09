@@ -29,8 +29,8 @@ WHERE order_id = 459520441;
 -- クエリタグの設定を解除
 ALTER SESSION UNSET query_tag;
 
--- ウェアハウスを一時停止
-ALTER WAREHOUSE tb_de_wh SUSPEND;
+-- ウェアハウスを一時停止（コメントアウト: AUTO_SUSPEND=60で自動停止するためエラー回避）
+-- ALTER WAREHOUSE tb_de_wh SUSPEND;
 
 -- リセット完了メッセージ
 SELECT '✅ Module 02 のリセットが完了しました。' AS message;

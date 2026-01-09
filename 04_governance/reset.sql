@@ -60,8 +60,8 @@ DROP TAG IF EXISTS governance.pii;
 -- クエリタグの設定を解除
 ALTER SESSION UNSET query_tag;
 
--- ウェアハウスを一時停止
-ALTER WAREHOUSE tb_dev_wh SUSPEND;
+-- ウェアハウスを一時停止（コメントアウト: AUTO_SUSPEND=60で自動停止するためエラー回避）
+-- ALTER WAREHOUSE tb_dev_wh SUSPEND;
 
 -- リセット完了メッセージ
 SELECT '✅ Module 04 のリセットが完了しました。' AS message;

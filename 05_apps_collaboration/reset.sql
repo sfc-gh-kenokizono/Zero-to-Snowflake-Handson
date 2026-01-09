@@ -22,8 +22,8 @@ DROP VIEW IF EXISTS harmonized.tastybytes_poi_v;
 -- クエリタグの設定を解除
 ALTER SESSION UNSET query_tag;
 
--- ウェアハウスを一時停止
-ALTER WAREHOUSE tb_de_wh SUSPEND;
+-- ウェアハウスを一時停止（コメントアウト: AUTO_SUSPEND=60で自動停止するためエラー回避）
+-- ALTER WAREHOUSE tb_de_wh SUSPEND;
 
 -- リセット完了メッセージ
 SELECT '✅ Module 05 のリセットが完了しました。' AS message;
