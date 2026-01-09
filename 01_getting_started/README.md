@@ -346,12 +346,6 @@ CREATE OR REPLACE SNOWFLAKE.CORE.BUDGET my_budget()
    - Marketplaceリスト
    - ドキュメント
 
-### 7-2. 自然言語で検索
-
-「Which truck franchise has the most loyal customer base?」
-
-> 🔍 関連するテーブル・ビューが表示されます！
-
 ---
 
 # 🎉 完了！
