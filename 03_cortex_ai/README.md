@@ -283,11 +283,7 @@ SELECT '🎉 Module 03 完了！次は Module 04: ガバナンスに進みまし
 |--------------|------|
 | [04_governance](../04_governance/) | Horizonによるガバナンス（RBAC、マスキング、行アクセス） |
 
----
-
-## 📚 参考リンク（任意）
-
-- [Cortex AI SQL関数](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-ai-sql-functions)
+---## 📚 参考リンク（任意）- [Cortex AI SQL関数](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-ai-sql-functions)
 - [SENTIMENT関数](https://docs.snowflake.com/en/sql-reference/functions/sentiment-snowflake-cortex)
 - [AI_CLASSIFY関数](https://docs.snowflake.com/en/sql-reference/functions/ai_classify-snowflake-cortex)
 - [EXTRACT_ANSWER関数](https://docs.snowflake.com/en/sql-reference/functions/extract_answer-snowflake-cortex)

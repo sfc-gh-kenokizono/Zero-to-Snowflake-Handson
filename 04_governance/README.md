@@ -443,11 +443,7 @@ SELECT '🎉 Module 04 完了！次は Module 05: アプリとコラボレーシ
 |--------------|------|
 | [05_apps_collaboration](../05_apps_collaboration/) | Marketplaceと外部データ連携 |
 
----
-
-## 📚 参考リンク（任意）
-
-- [アクセス制御の概要](https://docs.snowflake.com/en/user-guide/security-access-control-overview)
+---## 📚 参考リンク（任意）- [アクセス制御の概要](https://docs.snowflake.com/en/user-guide/security-access-control-overview)
 - [自動分類](https://docs.snowflake.com/en/user-guide/classify-auto)
 - [列レベルセキュリティ](https://docs.snowflake.com/en/user-guide/security-column-intro)
 - [行アクセスポリシー](https://docs.snowflake.com/en/user-guide/security-row-intro)
